@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package fi.tuni.prog3.weatherapp.interfaces;
+package fi.tuni.prog3.weatherapp;
 
 /**
  * Interface for extracting data from the OpenWeatherMap API.
