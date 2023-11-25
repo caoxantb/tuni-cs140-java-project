@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package fi.tuni.prog3.weatherapp;
+package fi.tuni.prog3.weatherapp.interfaces;
 
 /**
  * Interface with methods to read from a file and write to a file.
