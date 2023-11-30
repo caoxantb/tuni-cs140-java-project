@@ -91,10 +91,6 @@ public class LocationDataService {
         .distinct()
         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
-    for (LocationData data : filteredLocations) {
-      System.out.printf("%s, %s, %s, %s\n", data.getCity(), data.getState(), data.getCountry(), data.getCountryCode());
-    }
-
     return filteredLocations;
   }
 
@@ -159,8 +155,6 @@ public class LocationDataService {
       favoriteLocations.add(location);
     });
 
-    System.out.println(favoriteLocations);
-
     return favoriteLocations;
   }
 
@@ -224,7 +218,7 @@ public class LocationDataService {
     if (history.size() > 20) {
       history.remove(0);
     }
-    writeToFile(FAVORITE_PATH, history);
+    writeToFile(HISTORY_PATH, history);
   }
 
   public ArrayList<LocationData> getHistory() {
