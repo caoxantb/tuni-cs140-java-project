@@ -2,10 +2,12 @@
 package fi.tuni.prog3.weatherapp.utilities;
 
 import fi.tuni.prog3.weatherapp.models.WeatherData;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+
 
 /**
  * The {@code WeatherUtils} class provides utility methods for weather-related operations.
