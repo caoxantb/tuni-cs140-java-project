@@ -1,5 +1,5 @@
 
-package fi.tuni.prog3.weatherapp.Models;
+package fi.tuni.prog3.weatherapp.models;
 
 /**
  * The {@code WeatherData} class represents weather information for a specific location.

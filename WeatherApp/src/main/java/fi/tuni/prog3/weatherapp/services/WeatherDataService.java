@@ -9,7 +9,7 @@ package fi.tuni.prog3.weatherapp.services;
  * @author Ayman Khan
  */
 
-import fi.tuni.prog3.weatherapp.Models.WeatherData;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

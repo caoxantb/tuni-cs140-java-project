@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import fi.tuni.prog3.weatherapp.Models.WeatherData;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
 import fi.tuni.prog3.weatherapp.services.WeatherDataService;
 import java.util.ArrayList;
 
