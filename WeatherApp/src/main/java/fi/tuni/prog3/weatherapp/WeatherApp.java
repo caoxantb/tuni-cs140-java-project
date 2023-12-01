@@ -23,6 +23,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
+import fi.tuni.prog3.weatherapp.services.WeatherDataService;
+import java.util.ArrayList;
 
 /**
  * JavaFX Sisu
@@ -326,6 +329,7 @@ public class WeatherApp extends Application {
   }
 
   public static void main(String[] args) {
+        test();
     launch();
   }
 
@@ -372,4 +376,51 @@ public class WeatherApp extends Application {
 
     return button;
   }
+    
+    //DEBUGGING APIS
+    private static void test(){
+    
+         WeatherDataService weatherService = new WeatherDataService();
+
+        // Coordinates for a specific location
+        float latitude = 44.34f;
+        float longitude = 10.99f;
+
+        WeatherData currentWeather = weatherService.getCurrentWeatherData(latitude, longitude);
+        if (currentWeather != null) {
+            System.out.println("Timestamp: " + currentWeather.getTimestamp());
+            System.out.println("Temperature: " + currentWeather.getTemp() + " K");
+            System.out.println("Feels Like: " + currentWeather.getTempFeelsLike() + " K");
+            System.out.println("Wind Speed: " + currentWeather.getWindSpeed() + " m/s");
+            System.out.println("Wind Direction: " + currentWeather.getWindDir() + " degrees");
+            System.out.println("Precipitation: " + currentWeather.getPrecipitation() + " mm");
+            System.out.println("Latitude: " + currentWeather.getLat());
+            System.out.println("Longitude: " + currentWeather.getLon());
+            System.out.println("Weather Description: " + currentWeather.getWeatherDesc());
+            System.out.println("Icon: " + currentWeather.getIcon());
+        } else {
+            System.out.println("Failed to fetch weather data for the specified location.");
+        }
+        
+        ArrayList<WeatherData> forecastData = weatherService.get5day3HourlyForecast(latitude, longitude);
+        for (WeatherData data : forecastData) {
+            System.out.println("Timestamp: " + data.getTimestamp());
+            System.out.println("Wind Speed: " + data.getWindSpeed());
+            System.out.println("Icon: " + data.getIcon());
+            System.out.println("Temperature: " + data.getTemp());
+            System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
+            System.out.println("--------------------------------------------");
+        }
+        
+        ArrayList<WeatherData> weeklyForecast = weatherService.getWeeklyForecast(latitude, longitude);
+        for (WeatherData data : weeklyForecast) {
+            System.out.println("Timestamp: " + data.getTimestamp());
+            System.out.println("Wind Speed: " + data.getWindSpeed());
+            System.out.println("Icon: " + data.getIcon());
+            System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
+            System.out.println("Min Temp: " + data.getMinTemp());
+            System.out.println("Max Temp: " + data.getMaxTemp());
+            System.out.println("--------------------------------------");
+        }
+    }
 }
