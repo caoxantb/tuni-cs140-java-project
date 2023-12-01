@@ -1,7 +1,7 @@
 
 package fi.tuni.prog3.weatherapp.utilities;
 
-import fi.tuni.prog3.weatherapp.Models.WeatherData;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
 
 /**
  *
