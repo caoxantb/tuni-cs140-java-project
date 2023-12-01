@@ -124,26 +124,26 @@ public class WeatherDataService {
         
         try
         { 
-            String apiUrl = baseUrl + "forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=7&appid=" + apiKey;
+            String apiUrl = "https://api.openweathermap.org/data/3.0/onecall?lat=" +lat+ "&lon=" +lon+ "&exclude=current,hourly,minutely&appid=" + apiKey;
             StringBuilder response = fetchDataRequest(apiUrl);
             if (response != null && response.length() > 0) {
                 
                 JSONObject json = new JSONObject(response.toString());              
-                JSONArray forecastList = json.getJSONArray("list");
-
-                for (int i = 0; i < forecastList.length(); i++) {
-                    JSONObject dailyForecast = forecastList.getJSONObject(i);
+                JSONArray dailyForecasts = json.getJSONArray("daily");
+            
+                for (int i = 0; i < dailyForecasts.length(); i++) {
+                    JSONObject dailyForecast = dailyForecasts.getJSONObject(i);
 
                     int timestamp = dailyForecast.getInt("dt");
-                    float windSpeed = dailyForecast.getFloat("speed");
+                    float windSpeed = dailyForecast.getFloat("wind_speed");
                     String icon = dailyForecast.getJSONArray("weather").getJSONObject(0).getString("icon");
-                    float precipitationPerc = dailyForecast.getFloat("pop");
+                    float precipitationPerc = dailyForecast.optFloat("rain", 0); // If rain key doesn't exist, default to 0
                     int minTemp = (int) dailyForecast.getJSONObject("temp").getDouble("min");
                     int maxTemp = (int) dailyForecast.getJSONObject("temp").getDouble("max");
 
                     WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp);
                     weeklyWeatherForecast.add(weatherData);
-                }                                  
+                }                        
             }       
         } catch (Exception e) {           
             e.printStackTrace();
@@ -179,21 +179,6 @@ public class WeatherDataService {
         }
         
         return response;
-    }
-    
-    // Convert necessary WeatherData fields to expected system (metric/imperial)
-    public WeatherData convertToUnitSystem(WeatherData data, String system) {      
-        return null; 
-    }
-
-    // Returns local time in string format “dd.mm.yyyy hh:mm:ss”
-    public String getLocalTime(int timestamp, int timeOffset) {        
-        return null; 
-    }   
-    
-    // Return SVG string of wind direction with the given angle
-    public String getWindDirectionIcon(int windDir) {        
-        return null; 
-    }
+    }    
 }
 
