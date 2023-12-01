@@ -6,8 +6,8 @@ package fi.tuni.prog3.weatherapp.controllers;
 
 /**
  *
- * @author Ayman Khan
+ * @author Xuan-An Cao
  */
 public class LocationDataController {
-    
+  //
 }
