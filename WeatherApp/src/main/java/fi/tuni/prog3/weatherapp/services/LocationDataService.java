@@ -5,6 +5,7 @@
 package fi.tuni.prog3.weatherapp.services;
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
+import fi.tuni.prog3.weatherapp.interfaces.iReadAndWriteToFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -27,7 +28,7 @@ import java.net.URL;
  *
  * @author Xuan-An Cao
  */
-public class LocationDataService {
+public class LocationDataService implements iReadAndWriteToFile {
   private static final String API_KEY = "d3f1720d73d8b9dbf2a82558b1d79103";
   private static final String LOCATION_API_PREFIX = "https://api.openweathermap.org/geo/1.0/direct?q=";
   private static final String LOCATION_API_SUFFIX = "&limit=5&appid=";
@@ -94,7 +95,7 @@ public class LocationDataService {
     return filteredLocations;
   }
 
-  private JsonArray readFromFile(String filePath) {
+  public JsonArray readFromFile(String filePath) {
     try (FileReader fileReader = new FileReader(filePath)) {
       JsonElement jsonElement = JsonParser.parseReader(fileReader);
 
@@ -109,7 +110,7 @@ public class LocationDataService {
     }
   }
 
-  private void writeToFile(String filePath, JsonArray data) {
+  public void writeToFile(String filePath, JsonArray data) {
     // Create a Gson object
     Gson gson = new Gson();
 
