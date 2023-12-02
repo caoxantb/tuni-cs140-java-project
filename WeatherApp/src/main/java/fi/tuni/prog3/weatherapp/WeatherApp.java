@@ -420,7 +420,7 @@ public class WeatherApp extends Application {
             System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
             System.out.println("Min Temp: " + data.getMinTemp());
             System.out.println("Max Temp: " + data.getMaxTemp());
-            System.out.println("--------------------------------------");
+            System.out.println("---------------------------------");
         }
     }
 }

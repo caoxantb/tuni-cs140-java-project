@@ -159,5 +159,24 @@ public class WeatherData {
     public int getMaxTemp() {
         return maxTemp;
     }
+    
+    // SETTERS for WeatherData Temperature Feilds
+    
+    public void setTemp(int temp) {
+        this.temp = temp;
+    }
+
+    public void setTempFeelsLike(int tempFeelsLike) {
+        this.tempFeelsLike = tempFeelsLike;
+    }
+
+    public void setMinTemp(int minTemp) {
+        this.minTemp = minTemp;
+    }
+
+    public void setMaxTemp(int maxTemp) {
+        this.maxTemp = maxTemp;
+    }
+    
 }
 
