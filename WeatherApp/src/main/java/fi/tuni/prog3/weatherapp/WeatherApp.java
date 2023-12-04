@@ -1,41 +1,24 @@
 package fi.tuni.prog3.weatherapp;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import fi.tuni.prog3.weatherapp.controllers.LocationDataController;
 import fi.tuni.prog3.weatherapp.models.LocationData;
 import fi.tuni.prog3.weatherapp.models.WeatherData;
 import fi.tuni.prog3.weatherapp.services.LocationDataService;
 import fi.tuni.prog3.weatherapp.services.WeatherDataService;
-import fi.tuni.prog3.weatherapp.views.CurrentWeatherBox;
-import fi.tuni.prog3.weatherapp.views.DailyWeatherBox;
-import fi.tuni.prog3.weatherapp.views.HourlyWeatherBox;
 import fi.tuni.prog3.weatherapp.views.MainContent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * JavaFX Sisu
@@ -48,9 +31,18 @@ public class WeatherApp extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     LocationDataService locationDataService = new LocationDataService();
+    WeatherDataService weatherDataService = new WeatherDataService();
+
+    LocationData latestSearchLocation = locationDataService.getCurrentLocation();
+    float latitude = latestSearchLocation.getLat();
+    float longitude = latestSearchLocation.getLon();
+    WeatherData currentWeatherData = weatherDataService.getCurrentWeatherData(latitude, longitude);
+    ArrayList<WeatherData> hourlyWeatherData = weatherDataService.get5day3HourlyForecast(latitude, longitude);
+    ArrayList<WeatherData> dailyWeatherData = weatherDataService.getWeeklyForecast(latitude, longitude);
+
     TabPane tabpane = new TabPane();
 
-    Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, locationDataService).getContent();
+    Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation, currentWeatherData).getContent();
     Tab main = new Tab("Weather Report");
     main.setContent(mainContent);
 
@@ -82,10 +74,12 @@ public class WeatherApp extends Application {
       hbox.getChildren().add(new Label("hello"));
       hbox.setOnMouseClicked(event -> {
         try {
-          LocationData searchedLocation = locationDataService.queryLocation("London").get(x);
-          locationDataService.addToHistory(searchedLocation);
-          Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, locationDataService).getContent();
-          // quadrant3.getChildren().add
+          LocationData newLocation = locationDataService.queryLocation("London").get(x);
+          float newLatitude = newLocation.getLat();
+          float newLongitude = newLocation.getLon();
+          WeatherData newCurrentWeatherData = weatherDataService.getCurrentWeatherData(newLatitude, newLongitude);
+          locationDataService.addToHistory(newLocation);
+          Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, newLocation, newCurrentWeatherData).getContent();
           main.setContent(newMainContent);
         } catch (IOException e) {
           e.printStackTrace();
@@ -119,18 +113,6 @@ public class WeatherApp extends Application {
   public static void main(String[] args) {
     // test();
     launch();
-  }
-
-  private Button getQuitButton() {
-    // Creating a button.
-    Button button = new Button("Quit");
-
-    // Adding an event to the button to terminate the application.
-    button.setOnAction((ActionEvent event) -> {
-      Platform.exit();
-    });
-
-    return button;
   }
 
   // DEBUGGING APIS

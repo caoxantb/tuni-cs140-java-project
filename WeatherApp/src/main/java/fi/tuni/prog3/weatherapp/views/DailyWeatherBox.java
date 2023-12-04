@@ -1,6 +1,6 @@
 package fi.tuni.prog3.weatherapp.views;
 
-import fi.tuni.prog3.weatherapp.services.LocationDataService;
+import fi.tuni.prog3.weatherapp.models.LocationData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -16,12 +16,12 @@ import javafx.scene.transform.Rotate;
 
 public class DailyWeatherBox {
   int width, height;
-  LocationDataService locationDataService;
+  LocationData location;
 
-  public DailyWeatherBox(int width, int height, LocationDataService locationDataService) {
+  public DailyWeatherBox(int width, int height, LocationData location) {
     this.width = width;
     this.height = height;
-    this.locationDataService = locationDataService;
+    this.location = location;
   }
 
   public HBox getContent() {

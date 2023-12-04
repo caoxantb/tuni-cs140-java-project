@@ -1,7 +1,9 @@
 package fi.tuni.prog3.weatherapp.views;
 
 import fi.tuni.prog3.weatherapp.controllers.LocationDataController;
-import fi.tuni.prog3.weatherapp.services.LocationDataService;
+import fi.tuni.prog3.weatherapp.models.LocationData;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
+import fi.tuni.prog3.weatherapp.utilities.WeatherUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -18,16 +20,19 @@ import java.io.IOException;
 
 public class CurrentWeatherBox {
   int width, height;
-  LocationDataService locationDataService;
+  LocationData location;
+  WeatherData currentWeatherData ;
 
-  public CurrentWeatherBox(int width, int height, LocationDataService locationDataService) {
+  public CurrentWeatherBox(int width, int height, LocationData location, WeatherData currentWeatherData) {
     this.width = width;
     this.height = height;
-    this.locationDataService = locationDataService;
+    this.location = location;
+    this.currentWeatherData = currentWeatherData;
   }
 
   public HBox getContent() throws IOException {
-    LocationDataController locationDataController = new LocationDataController(locationDataService);
+    LocationDataController locationDataController = new LocationDataController(location);
+    WeatherUtils weatherUtils = new WeatherUtils();
 
     HBox currentWeatherBox = new HBox();
     currentWeatherBox.setPrefWidth(width);
@@ -39,6 +44,11 @@ public class CurrentWeatherBox {
     currentWeatherStack.setAlignment(Pos.TOP_CENTER);
     currentWeatherStack.setPrefWidth(width);
 
+    int timestamp = currentWeatherData.getTimestamp();
+    int timeOffset = currentWeatherData.getTimeOffset();
+    Text currentTime = new Text(weatherUtils.getLocalTime(timestamp, timeOffset));
+    currentTime.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+
     HBox rowCity = new HBox();
     rowCity.setPrefWidth(width);
     rowCity.setAlignment(Pos.CENTER);
@@ -49,7 +59,6 @@ public class CurrentWeatherBox {
     locationIcon.setFitHeight(32);
     locationIcon.setPreserveRatio(true);
 
-    //TO-DO
     Text cityName = locationDataController.getSearchedLocationCity();
 
     rowCity.getChildren().addAll(locationIcon, cityName);
@@ -59,10 +68,8 @@ public class CurrentWeatherBox {
     rowCountry.setAlignment(Pos.CENTER);
     rowCountry.setSpacing(5);
 
-    //TO-DO
     ImageView countryFlag = locationDataController.getSearchedLocationFlag();
 
-    //TO-DO
     Text stateAndCountryName = locationDataController.getSearchedLocationCountryAndState();
 
     rowCountry.getChildren().addAll(countryFlag, stateAndCountryName);
@@ -77,13 +84,12 @@ public class CurrentWeatherBox {
     weatherIcon.setFitHeight(100);
     weatherIcon.setPreserveRatio(true);
 
-    Text temp = new Text("26°C");
+    int tempInt = currentWeatherData.getTemp();
+    Text temp = new Text(String.format("%d°C", tempInt));
     temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
 
-    Text currentTime = new Text("16:10");
-    currentTime.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-
-    Text desc = new Text("Sunny with Cloud");
+    String weatherDesc = currentWeatherData.getWeatherDesc();
+    Text desc = new Text(Character.toUpperCase(weatherDesc.charAt(0)) + weatherDesc.substring(1));
     desc.setFont(Font.font("Futura", FontWeight.BOLD, 20));
 
     HBox weatherDetail = new HBox();
@@ -95,11 +101,13 @@ public class CurrentWeatherBox {
     precipitationIcon.setFitHeight(14);
     precipitationIcon.setPreserveRatio(true);
 
-    Text precipitation = new Text(" 0 mm/h");
+    float precipitationFloat = currentWeatherData.getPrecipitation();
+    Text precipitation = new Text(String.format(" %.1f mm/h", precipitationFloat));
     precipitation.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(precipitation, new Insets(0, 20, 0, 0));
 
-    Text tempFeelsLike = new Text("Feels like 28°");
+    int tempFeelsLikeInt = currentWeatherData.getTempFeelsLike();
+    Text tempFeelsLike = new Text(String.format("Feels like %d°", tempFeelsLikeInt));
     tempFeelsLike.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(tempFeelsLike, new Insets(0, 12, 0, 0));
 
@@ -108,15 +116,17 @@ public class CurrentWeatherBox {
     windIcon.setFitHeight(14);
     windIcon.setPreserveRatio(true);
 
-    Text wind = new Text(" 5 km/h");
+    float windSpeed = currentWeatherData.getWindSpeed();
+    Text wind = new Text(String.format(" %.1f km/h", windSpeed));
     wind.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(wind, new Insets(0, 4, 0, 0));
 
+    int windDir = currentWeatherData.getWindDir();
     ImageView windDirectionIcon = new ImageView(
         new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
     windDirectionIcon.setFitHeight(14);
     windDirectionIcon.setPreserveRatio(true);
-    Rotate rotate = new Rotate(180, 7, 7);
+    Rotate rotate = new Rotate(windDir, 7, 7);
     windDirectionIcon.getTransforms().add(rotate);
 
     weatherTempBox.getChildren().addAll(weatherIcon, temp);

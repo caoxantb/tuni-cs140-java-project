@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
-import fi.tuni.prog3.weatherapp.services.LocationDataService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -20,12 +19,10 @@ import javafx.scene.text.Text;
  * @author Xuan-An Cao
  */
 public class LocationDataController {
-  LocationDataService locationDataService;
   LocationData location;
 
-  public LocationDataController(LocationDataService locationDataService) {
-    this.locationDataService = locationDataService;
-    this.location = locationDataService.getCurrentLocation();
+  public LocationDataController(  LocationData location) {
+    this.location = location;
   }
 
   public Text getSearchedLocationCity() {
