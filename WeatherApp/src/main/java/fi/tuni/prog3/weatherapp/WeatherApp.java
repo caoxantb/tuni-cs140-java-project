@@ -48,6 +48,9 @@ public class WeatherApp extends Application {
 
     Tab search = new Tab("Search and History");
 
+    // =======================================================================
+    // THIS CODE SECTION IS FOR TESTING PURPOSES ONLY. SHOULD BE REMOVED ONCE
+    // THE SEARCH AND HISTORY PAGE HAS BEEN IMPLEMENTED.
     VBox quadrant1 = new VBox();
     VBox quadrant2 = new VBox();
     VBox quadrant3 = new VBox();
@@ -97,6 +100,7 @@ public class WeatherApp extends Application {
     VBox all = new VBox(top, bottom);
 
     search.setContent(all);
+    // ====================================================================
 
     tabpane.getTabs().addAll(main, search);
 
