@@ -18,17 +18,19 @@ public class CurrentWeatherBox {
   int width, height;
   LocationData location;
   WeatherData weather;
+  String unit;
 
-  public CurrentWeatherBox(int width, int height, LocationData location, WeatherData weather) {
+  public CurrentWeatherBox(int width, int height, LocationData location, WeatherData weather, String unit) {
     this.width = width;
     this.height = height;
     this.location = location;
     this.weather = weather;
+    this.unit = unit;
   }
 
   public HBox getContent() throws IOException {
     LocationDataController locationDataController = new LocationDataController(location);
-    WeatherDataController weatherDataController = new WeatherDataController(weather);
+    WeatherDataController weatherDataController = new WeatherDataController(weather, unit);
 
     Text currentTime = weatherDataController.getWeatherLocalTime();
     Text cityName = locationDataController.getSearchedLocationCity();

@@ -21,10 +21,12 @@ import javafx.scene.transform.Rotate;
  */
 public class WeatherDataController {
   WeatherData weather;
+  String unit;
   WeatherUtils weatherUtils = new WeatherUtils();
 
-  public WeatherDataController(WeatherData weather) {
-    this.weather = weather;
+  public WeatherDataController(WeatherData weather, String unit) {
+    this.weather = weatherUtils.convertToUnitSystem(weather, unit);
+    this.unit = unit;
   }
 
   public Text getWeatherLocalTime() {
@@ -36,8 +38,9 @@ public class WeatherDataController {
   }
 
   public Text getWeatherTemp() {
-    int tempInt = weather.getTemp();
-    Text temp = new Text(String.format("%d°C", tempInt));
+    int tempInt = (int) Math.round(weather.getTemp());
+    String tempUnit = unit == "imperial" ? "F" : "C";
+    Text temp = new Text(String.format("%d°%s", tempInt, tempUnit));
     temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
     return temp;
   }
@@ -58,8 +61,8 @@ public class WeatherDataController {
   }
 
   public Text getWeatherTempFeelsLike() {
-    int tempFeelsLikeInt = weather.getTempFeelsLike();
-    Text tempFeelsLike = new Text(String.format("Feels like %d°", tempFeelsLikeInt));
+    int tempFeelsLikeInt = (int) Math.round(weather.getTempFeelsLike());
+    Text tempFeelsLike = new Text(String.format("Feels like %d°%s", tempFeelsLikeInt));
     tempFeelsLike.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(tempFeelsLike, new Insets(0, 12, 0, 0));
     return tempFeelsLike;

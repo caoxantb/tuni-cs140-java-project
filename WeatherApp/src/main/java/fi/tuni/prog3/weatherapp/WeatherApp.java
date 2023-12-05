@@ -1,7 +1,9 @@
 package fi.tuni.prog3.weatherapp;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -32,6 +34,7 @@ public class WeatherApp extends Application {
   public void start(Stage stage) throws IOException {
     LocationDataService locationDataService = new LocationDataService();
     WeatherDataService weatherDataService = new WeatherDataService();
+    SimpleStringProperty unit = new SimpleStringProperty("initial");
 
     LocationData latestSearchLocation = locationDataService.getCurrentLocation();
     float latitude = latestSearchLocation.getLat();
@@ -43,9 +46,29 @@ public class WeatherApp extends Application {
     TabPane tabpane = new TabPane();
 
     Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation, currentWeatherData,
-        hourlyWeatherData, dailyWeatherData).getContent();
+        hourlyWeatherData, dailyWeatherData, unit.get()).getContent();
     Tab main = new Tab("Weather Report");
     main.setContent(mainContent);
+
+    Button btn = new Button();
+    btn.setText("Unit system!");
+
+    // Handling the button click event using an anonymous inner class
+    btn.setOnAction(event -> {
+      if (unit.get().equals("imperial")) {
+        unit.set("metric");
+      } else {
+        unit.set("imperial");
+      }
+      try {
+        Pane mainContentButton = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation, currentWeatherData,
+            hourlyWeatherData, dailyWeatherData, unit.get()).getContent();
+        main.setContent(mainContentButton);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      System.out.println("Unit system changed to: " + unit.get());
+    });
 
     Tab search = new Tab("Search and History");
 
@@ -87,7 +110,7 @@ public class WeatherApp extends Application {
           ArrayList<WeatherData> newDailyWeatherData = weatherDataService.getWeeklyForecast(newLatitude, newLongitude);
           locationDataService.addToHistory(newLocation);
           Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, newLocation, newCurrentWeatherData,
-              newHourlyWeatherData, newDailyWeatherData).getContent();
+              newHourlyWeatherData, newDailyWeatherData, unit.get()).getContent();
           main.setContent(newMainContent);
         } catch (IOException e) {
           e.printStackTrace();
@@ -102,7 +125,7 @@ public class WeatherApp extends Application {
 
     HBox top = new HBox(quadrant1, quadrant2);
     HBox bottom = new HBox(quadrant3, quadrant4);
-    VBox all = new VBox(top, bottom);
+    VBox all = new VBox(btn, top, bottom);
 
     search.setContent(all);
     // ====================================================================

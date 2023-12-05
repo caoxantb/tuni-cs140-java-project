@@ -14,11 +14,11 @@ public class WeatherData {
     // Fields representing current weather conditions and forecasts
     private int timestamp;
     private int timeOffset;
-    private int temp;
-    private int tempFeelsLike;
+    private double temp;
+    private double tempFeelsLike;
     private int windDir;
-    private int minTemp;
-    private int maxTemp;
+    private double minTemp;
+    private double maxTemp;
     private float windSpeed;   
     private float precipitation;
     private float lat;
@@ -57,7 +57,7 @@ public class WeatherData {
      * @param weatherDesc       A brief description of the weather condition.   
      */
     
-    public WeatherData(int timestamp, int timeOffset, int temp, int tempFeelsLike, int windDir,
+    public WeatherData(int timestamp, int timeOffset, double temp, double tempFeelsLike, int windDir,
                        float windSpeed, float precipitation, float lat, float lon,
                        String weatherDesc, String icon) {
         this(timestamp, windSpeed, icon);
@@ -79,7 +79,7 @@ public class WeatherData {
      * @param icon                  The icon code representing the weather condition.
      * @param precipitationPerc     The probability of precipitation.
      */
-    public WeatherData(int timestamp, int temp, float windSpeed, String icon, float precipitationPerc) {
+    public WeatherData(int timestamp, double temp, float windSpeed, String icon, float precipitationPerc) {
         this(timestamp, windSpeed, icon);
         this.temp = temp;
         this.precipitationPerc = precipitationPerc;
@@ -95,7 +95,7 @@ public class WeatherData {
      * @param minTemp               The minimum temperature of the day in Kelvin.
      * @param maxTemp               The maximum temperature of the day in Kelvin.
      */
-    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, int minTemp, int maxTemp) {
+    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp) {
         this(timestamp, windSpeed, icon);
         this.precipitationPerc = precipitationPerc;
         this.minTemp = minTemp;
@@ -112,11 +112,11 @@ public class WeatherData {
         return timeOffset;
     }
 
-    public int getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public int getTempFeelsLike() {
+    public double getTempFeelsLike() {
         return tempFeelsLike;
     }
 
@@ -152,29 +152,29 @@ public class WeatherData {
         return precipitationPerc;
     }
     
-    public int getMinTemp() {
+    public double getMinTemp() {
         return minTemp;
     }
 
-    public int getMaxTemp() {
+    public double getMaxTemp() {
         return maxTemp;
     }
     
     // SETTERS for WeatherData Temperature Feilds
     
-    public void setTemp(int temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
-    public void setTempFeelsLike(int tempFeelsLike) {
+    public void setTempFeelsLike(double tempFeelsLike) {
         this.tempFeelsLike = tempFeelsLike;
     }
 
-    public void setMinTemp(int minTemp) {
+    public void setMinTemp(double minTemp) {
         this.minTemp = minTemp;
     }
 
-    public void setMaxTemp(int maxTemp) {
+    public void setMaxTemp(double maxTemp) {
         this.maxTemp = maxTemp;
     }
     

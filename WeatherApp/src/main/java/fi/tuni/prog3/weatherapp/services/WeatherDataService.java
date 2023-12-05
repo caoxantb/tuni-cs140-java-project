@@ -48,9 +48,9 @@ public class WeatherDataService {
                 float windSpeed = (float) json.getJSONObject("wind").getDouble("speed");
                 String icon = json.getJSONArray("weather").getJSONObject(0).getString("icon");
 
-                int temp = (int) json.getJSONObject("main").getDouble("temp");
+                double temp = json.getJSONObject("main").getDouble("temp");
                 int timeOffset = json.getInt("timezone");
-                int tempFeelsLike = (int) json.getJSONObject("main").getDouble("feels_like");
+                double tempFeelsLike = json.getJSONObject("main").getDouble("feels_like");
                 int windDir = json.getJSONObject("wind").getInt("deg");
                 float precipitation = json.optJSONObject("rain") != null ? json.getJSONObject("rain").optInt("1h") : 0;
                 float latValue = (float) json.getJSONObject("coord").getDouble("lat");
@@ -96,7 +96,7 @@ public class WeatherDataService {
                     int timestamp = forecastObj.optInt("dt");
                     float windSpeed = forecastObj.getJSONObject("wind").optFloat("speed");
                     String icon = forecastObj.getJSONArray("weather").getJSONObject(0).optString("icon");
-                    int temp = forecastObj.getJSONObject("main").optInt("temp");
+                    double temp = forecastObj.getJSONObject("main").optDouble("temp");
                     float precipitationPerc = forecastObj.optJSONObject("rain") != null ?
                             forecastObj.getJSONObject("rain").optInt("3h") : 0;
 
@@ -138,8 +138,8 @@ public class WeatherDataService {
                     float windSpeed = dailyForecast.getFloat("wind_speed");
                     String icon = dailyForecast.getJSONArray("weather").getJSONObject(0).getString("icon");
                     float precipitationPerc = dailyForecast.optFloat("rain", 0); // If rain key doesn't exist, default to 0
-                    int minTemp = (int) dailyForecast.getJSONObject("temp").getDouble("min");
-                    int maxTemp = (int) dailyForecast.getJSONObject("temp").getDouble("max");
+                    double minTemp = dailyForecast.getJSONObject("temp").getDouble("min");
+                    double maxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
 
                     WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp);
                     weeklyWeatherForecast.add(weatherData);

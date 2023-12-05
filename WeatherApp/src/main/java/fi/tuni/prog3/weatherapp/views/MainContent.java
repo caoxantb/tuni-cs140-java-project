@@ -15,21 +15,23 @@ public class MainContent {
   WeatherData currentWeatherData;
   ArrayList<WeatherData> hourlyWeatherData;
   ArrayList<WeatherData> dailyWeatherData;
+  String unit;
 
   public MainContent(int width, int height, LocationData location, WeatherData currentWeatherData,
-      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData) {
+      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData, String unit) {
     this.width = width;
     this.height = height;
     this.location = location;
     this.currentWeatherData = currentWeatherData;
     this.hourlyWeatherData = hourlyWeatherData;
     this.dailyWeatherData = dailyWeatherData;
+    this.unit = unit;
   }
 
   public Pane getContent() throws IOException {
     Pane mainContent = new Pane();
 
-    HBox currentWeatherBox = new CurrentWeatherBox(width, height, location, currentWeatherData).getContent();
+    HBox currentWeatherBox = new CurrentWeatherBox(width, height, location, currentWeatherData, unit).getContent();
     HBox hourlyWeatherBox = new HourlyWeatherBox(width, height, location, hourlyWeatherData).getContent();
     HBox dailyWeatherBox = new DailyWeatherBox(width, height, location, dailyWeatherData).getContent();
 

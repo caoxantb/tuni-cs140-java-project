@@ -32,24 +32,29 @@ public class WeatherUtils {
 
         // Convert fields based on the system
         switch (system) {
+            case "initial":
+                // Convert to metric system on initialization
+                data.setTemp(data.getTemp() - 273.15); // Convert temperature from Fahrenheit to Celsius
+                data.setTempFeelsLike(data.getTempFeelsLike() - 273.15); // Convert feels-like temperature
+                data.setMinTemp(data.getMinTemp() - 273.15); // Convert min temperature
+                data.setMaxTemp(data.getMaxTemp() - 273.15); // Convert max temperature
+                break;
             case "metric":
                 // Convert to metric system (if required)
-                // For example, if the system is metric, convert Kelvin to Celsius
-                // 0°C = 273.15K
-                data.setTemp(data.getTemp() - 273); // Convert temperature from Kelvin to Celsius
-                data.setTempFeelsLike(data.getTempFeelsLike() - 273); // Convert feels-like temperature
-                data.setMinTemp(data.getMinTemp() - 273); // Convert min temperature
-                data.setMaxTemp(data.getMaxTemp() - 273); // Convert max temperature
+                // For example, if the system is metric, convert Fahrenheit to Celsius
+                data.setTemp((data.getTemp() - 32) * 5/9); // Convert temperature from Fahrenheit to Celsius
+                data.setTempFeelsLike((data.getTempFeelsLike() - 32) * 5/9); // Convert feels-like temperature
+                data.setMinTemp((data.getMinTemp() - 32) * 5/9); // Convert min temperature
+                data.setMaxTemp((data.getMaxTemp() - 32) * 5/9); // Convert max temperature
                 break;
             case "imperial":
                 // Convert to imperial system (if required)
                 // Implement conversion logic for the imperial system here
                 // For example, if you want to convert temperature from Celsius to Fahrenheit
-                // 0°C = 32°F
-                data.setTemp((int) Math.round(data.getTemp() * 9 / 5 - 459.67)); // Convert temperature from Kelvin to Fahrenheit
-                data.setTempFeelsLike((int) Math.round(data.getTempFeelsLike() * 9 / 5 - 459.67)); // Convert feels-like temperature
-                data.setMinTemp((int) Math.round(data.getMinTemp() * 9 / 5 - 459.67)); // Convert min temperature
-                data.setMaxTemp((int) Math.round(data.getMaxTemp() * 9 / 5 - 459.67)); // Convert max temperature
+                data.setTemp(data.getTemp() * 9 / 5 + 32); // Convert temperature from Kelvin to Fahrenheit
+                data.setTempFeelsLike(data.getTempFeelsLike() * 9 / 5 + 32); // Convert feels-like temperature
+                data.setMinTemp(data.getMinTemp() * 9 / 5 + 32); // Convert min temperature
+                data.setMaxTemp(data.getMaxTemp() * 9 / 5 + 32); // Convert max temperature
                 break;
             default:
                 // Handle unknown system
