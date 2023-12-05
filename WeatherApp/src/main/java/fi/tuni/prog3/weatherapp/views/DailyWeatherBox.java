@@ -1,6 +1,9 @@
 package fi.tuni.prog3.weatherapp.views;
 
+import java.util.ArrayList;
+
 import fi.tuni.prog3.weatherapp.models.LocationData;
+import fi.tuni.prog3.weatherapp.models.WeatherData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -17,11 +20,13 @@ import javafx.scene.transform.Rotate;
 public class DailyWeatherBox {
   int width, height;
   LocationData location;
+  ArrayList<WeatherData> dailyWeatherData;
 
-  public DailyWeatherBox(int width, int height, LocationData location) {
+  public DailyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> dailyWeatherData) {
     this.width = width;
     this.height = height;
     this.location = location;
+    this.dailyWeatherData = dailyWeatherData;
   }
 
   public HBox getContent() {
@@ -41,69 +46,72 @@ public class DailyWeatherBox {
     dailyWeatherStackContainer.setPrefWidth(width);
     dailyWeatherStackContainer.setSpacing(20);
 
-    VBox dailyWeatherStack = new VBox();
-    dailyWeatherStack.setPrefWidth((width - 180) / 8);
-    dailyWeatherStack.setSpacing(5);
-    dailyWeatherStack.setAlignment(Pos.TOP_CENTER);
+    for (int i = 0; i < 8; i++) {
+      VBox dailyWeatherStack = new VBox();
+      dailyWeatherStack.setPrefWidth(width / 8);
+      dailyWeatherStack.setSpacing(5);
+      dailyWeatherStack.setAlignment(Pos.TOP_CENTER);
 
-    Text forecastDay = new Text("17:00");
-    forecastDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+      Text forecastDay = new Text("17:00");
+      forecastDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
-    ImageView dailyWeatherIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/weather-91.png")));
-    dailyWeatherIcon.setFitHeight(40);
-    dailyWeatherIcon.setPreserveRatio(true);
+      ImageView dailyWeatherIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/weather-91.png")));
+      dailyWeatherIcon.setFitHeight(40);
+      dailyWeatherIcon.setPreserveRatio(true);
 
-    HBox dailyPos = new HBox();
-    dailyPos.setPrefWidth((width - 180) / 8);
-    dailyPos.setAlignment(Pos.CENTER);
+      HBox dailyPos = new HBox();
+      dailyPos.setPrefWidth(width / 8);
+      dailyPos.setAlignment(Pos.CENTER);
 
-    ImageView dailyPosIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/pos.png")));
-    dailyPosIcon.setFitHeight(14);
-    dailyPosIcon.setPreserveRatio(true);
+      ImageView dailyPosIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/pos.png")));
+      dailyPosIcon.setFitHeight(14);
+      dailyPosIcon.setPreserveRatio(true);
 
-    Text dailyPosText = new Text(" 17%");
-    dailyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+      Text dailyPosText = new Text(" 17%");
+      dailyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
-    HBox dailyWind = new HBox();
-    dailyWind.setPrefWidth((width - 180) / 8);
-    dailyWind.setAlignment(Pos.CENTER);
+      HBox dailyWind = new HBox();
+      dailyWind.setPrefWidth(width / 8);
+      dailyWind.setAlignment(Pos.CENTER);
 
-    ImageView dailyWindIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/wind.png")));
-    dailyWindIcon.setFitHeight(14);
-    dailyWindIcon.setPreserveRatio(true);
+      ImageView dailyWindIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/wind.png")));
+      dailyWindIcon.setFitHeight(14);
+      dailyWindIcon.setPreserveRatio(true);
 
-    Text dailyWindText = new Text(" 8 km/h");
-    dailyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-    VBox.setMargin(dailyWindText, new Insets(0, 4, 0, 0));
+      Text dailyWindText = new Text(" 8 km/h");
+      dailyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+      VBox.setMargin(dailyWindText, new Insets(0, 4, 0, 0));
 
-    ImageView dailyWindDirectionIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
-    dailyWindDirectionIcon.setFitHeight(14);
-    dailyWindDirectionIcon.setPreserveRatio(true);
-    Rotate dailyRotate = new Rotate(180, 7, 7);
-    dailyWindDirectionIcon.getTransforms().add(dailyRotate);
+      ImageView dailyWindDirectionIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
+      dailyWindDirectionIcon.setFitHeight(14);
+      dailyWindDirectionIcon.setPreserveRatio(true);
+      Rotate dailyRotate = new Rotate(180, 7, 7);
+      dailyWindDirectionIcon.getTransforms().add(dailyRotate);
 
-    Text dailyTempMax = new Text("31°");
-    dailyTempMax.setFont(Font.font("Futura", FontWeight.BOLD, 14));
-    VBox.setMargin(dailyTempMax, new Insets(10, 0, 0, 0));
+      Text dailyTempMax = new Text("31°");
+      dailyTempMax.setFont(Font.font("Futura", FontWeight.BOLD, 14));
+      VBox.setMargin(dailyTempMax, new Insets(10, 0, 0, 0));
 
-    Rectangle dailyTempSpan = new Rectangle(12, 52);
-    dailyTempSpan.setFill(Color.BLACK);
-    dailyTempSpan.setArcWidth(12);
-    dailyTempSpan.setArcHeight(12);
-    VBox.setMargin(dailyTempSpan, new Insets(0, 6, 0, 0));
+      Rectangle dailyTempSpan = new Rectangle(12, 52);
+      dailyTempSpan.setFill(Color.BLACK);
+      dailyTempSpan.setArcWidth(12);
+      dailyTempSpan.setArcHeight(12);
+      VBox.setMargin(dailyTempSpan, new Insets(0, 6, 0, 0));
 
-    Text dailyTempMin = new Text("21°");
-    dailyTempMin.setFont(Font.font("Futura", FontWeight.BOLD, 14));
+      Text dailyTempMin = new Text("21°");
+      dailyTempMin.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
-    dailyPos.getChildren().addAll(dailyPosIcon, dailyPosText);
-    dailyWind.getChildren().addAll(dailyWindIcon, dailyWindText, dailyWindDirectionIcon);
-    dailyWeatherStack.getChildren().addAll(forecastDay, dailyWeatherIcon, dailyPos, dailyWind, dailyTempMax,
-        dailyTempSpan, dailyTempMin);
-    dailyWeatherStackContainer.getChildren().addAll(dailyWeatherStack);
+      dailyPos.getChildren().addAll(dailyPosIcon, dailyPosText);
+      dailyWind.getChildren().addAll(dailyWindIcon, dailyWindText, dailyWindDirectionIcon);
+      dailyWeatherStack.getChildren().addAll(forecastDay, dailyWeatherIcon, dailyPos, dailyWind, dailyTempMax,
+          dailyTempSpan, dailyTempMin);
+      dailyWeatherStackContainer.getChildren().addAll(dailyWeatherStack);
+
+    }
     dailyWeatherContainer.getChildren().addAll(labelDaily, dailyWeatherStackContainer);
     dailyWeatherBox.getChildren().addAll(dailyWeatherContainer);
 

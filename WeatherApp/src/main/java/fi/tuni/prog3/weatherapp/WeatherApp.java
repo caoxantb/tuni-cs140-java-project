@@ -42,7 +42,8 @@ public class WeatherApp extends Application {
 
     TabPane tabpane = new TabPane();
 
-    Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation, currentWeatherData).getContent();
+    Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation, currentWeatherData,
+        hourlyWeatherData, dailyWeatherData).getContent();
     Tab main = new Tab("Weather Report");
     main.setContent(mainContent);
 
@@ -81,8 +82,12 @@ public class WeatherApp extends Application {
           float newLatitude = newLocation.getLat();
           float newLongitude = newLocation.getLon();
           WeatherData newCurrentWeatherData = weatherDataService.getCurrentWeatherData(newLatitude, newLongitude);
+          ArrayList<WeatherData> newHourlyWeatherData = weatherDataService.get5day3HourlyForecast(newLatitude,
+              newLongitude);
+          ArrayList<WeatherData> newDailyWeatherData = weatherDataService.getWeeklyForecast(newLatitude, newLongitude);
           locationDataService.addToHistory(newLocation);
-          Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, newLocation, newCurrentWeatherData).getContent();
+          Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, newLocation, newCurrentWeatherData,
+              newHourlyWeatherData, newDailyWeatherData).getContent();
           main.setContent(newMainContent);
         } catch (IOException e) {
           e.printStackTrace();
@@ -115,7 +120,7 @@ public class WeatherApp extends Application {
   }
 
   public static void main(String[] args) {
-    // test();
+    test();
     launch();
   }
 

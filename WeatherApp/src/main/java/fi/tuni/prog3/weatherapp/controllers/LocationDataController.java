@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 public class LocationDataController {
   LocationData location;
 
-  public LocationDataController(  LocationData location) {
+  public LocationDataController(LocationData location) {
     this.location = location;
   }
 
