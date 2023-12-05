@@ -62,7 +62,7 @@ public class WeatherDataController {
 
   public Text getWeatherTempFeelsLike() {
     int tempFeelsLikeInt = (int) Math.round(weather.getTempFeelsLike());
-    Text tempFeelsLike = new Text(String.format("Feels like %d°%s", tempFeelsLikeInt));
+    Text tempFeelsLike = new Text(String.format("Feels like %d°", tempFeelsLikeInt));
     tempFeelsLike.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(tempFeelsLike, new Insets(0, 12, 0, 0));
     return tempFeelsLike;
