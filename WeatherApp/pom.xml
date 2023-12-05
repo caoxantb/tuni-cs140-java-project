@@ -26,6 +26,13 @@
             <artifactId>json</artifactId>
             <version>20210307</version>
             <type>jar</type>
+        </dependency>       
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.1</version>
+            <scope>test</scope>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <build>

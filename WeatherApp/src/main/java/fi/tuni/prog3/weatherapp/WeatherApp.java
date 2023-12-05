@@ -22,9 +22,6 @@ import fi.tuni.prog3.weatherapp.views.MainContent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * JavaFX Sisu
- */
 public class WeatherApp extends Application {
 
   private static final int WINDOW_HEIGHT = 720;
