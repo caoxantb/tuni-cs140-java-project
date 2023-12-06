@@ -8,6 +8,7 @@ import fi.tuni.prog3.weatherapp.models.WeatherData;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
 
 public class MainContent {
   int width, height;
@@ -16,9 +17,10 @@ public class MainContent {
   ArrayList<WeatherData> hourlyWeatherData;
   ArrayList<WeatherData> dailyWeatherData;
   String unit;
-
+  Button button;
+  
   public MainContent(int width, int height, LocationData location, WeatherData currentWeatherData,
-      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData, String unit) {
+      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData, String unit, Button button) {
     this.width = width;
     this.height = height;
     this.location = location;
@@ -26,6 +28,7 @@ public class MainContent {
     this.hourlyWeatherData = hourlyWeatherData;
     this.dailyWeatherData = dailyWeatherData;
     this.unit = unit;
+    this.button = button;
   }
 
   public Pane getContent() throws IOException {
@@ -36,11 +39,10 @@ public class MainContent {
     HBox dailyWeatherBox = new DailyWeatherBox(width, height, location, dailyWeatherData).getContent();
 
     VBox container = new VBox();
-    container.getChildren().addAll(currentWeatherBox, hourlyWeatherBox, dailyWeatherBox);
+    container.getChildren().addAll(currentWeatherBox, button, hourlyWeatherBox, dailyWeatherBox);
     container.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(242, 226, 186, 0.7), transparent);");
 
     mainContent.getChildren().add(container);
-    // main.setContent(mainContent);
 
     return mainContent;
   }

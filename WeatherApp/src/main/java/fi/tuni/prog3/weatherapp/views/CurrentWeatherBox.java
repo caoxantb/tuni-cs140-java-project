@@ -32,6 +32,7 @@ public class CurrentWeatherBox {
     LocationDataController locationDataController = new LocationDataController(location);
     WeatherDataController weatherDataController = new WeatherDataController(weather, unit);
 
+    Text currentDay = weatherDataController.getWeatherLocalDay();
     Text currentTime = weatherDataController.getWeatherLocalTime();
     Text cityName = locationDataController.getSearchedLocationCity();
     ImageView countryFlag = locationDataController.getSearchedLocationFlag();
@@ -96,7 +97,7 @@ public class CurrentWeatherBox {
     weatherTempBox.getChildren().addAll(weatherIcon, temp);
     weatherDetail.getChildren().addAll(precipitationIcon, precipitation, tempFeelsLike, windIcon, wind,
         windDirectionIcon);
-    currentWeatherStack.getChildren().addAll(currentTime, rowCity, rowCountry, weatherTempBox, desc,
+    currentWeatherStack.getChildren().addAll(currentDay, currentTime, rowCity, rowCountry, weatherTempBox, desc,
         weatherDetail);
     currentWeatherBox.getChildren().addAll(currentWeatherStack);
 

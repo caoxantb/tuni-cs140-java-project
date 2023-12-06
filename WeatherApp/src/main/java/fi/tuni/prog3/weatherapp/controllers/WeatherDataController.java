@@ -29,10 +29,18 @@ public class WeatherDataController {
     this.unit = unit;
   }
 
-  public Text getWeatherLocalTime() {
+  public Text getWeatherLocalDay() {
     int timestamp = weather.getTimestamp();
     int timeOffset = weather.getTimeOffset();
-    Text currentTime = new Text(weatherUtils.getLocalTime(timestamp, timeOffset));
+    Text currentDay = new Text(weatherUtils.getLocalTime(timestamp, timeOffset).substring(0, 10));
+    currentDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+    return currentDay;
+  }
+
+    public Text getWeatherLocalTime() {
+    int timestamp = weather.getTimestamp();
+    int timeOffset = weather.getTimeOffset();
+    Text currentTime = new Text(weatherUtils.getLocalTime(timestamp, timeOffset).substring(11, 16));
     currentTime.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     return currentTime;
   }
