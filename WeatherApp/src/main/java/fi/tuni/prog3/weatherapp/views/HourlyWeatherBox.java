@@ -19,7 +19,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 
 public class HourlyWeatherBox {
   int width, height;
@@ -27,7 +26,8 @@ public class HourlyWeatherBox {
   ArrayList<WeatherData> hourlyWeatherData;
   String unit;
 
-  public HourlyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> hourlyWeatherData, String unit) {
+  public HourlyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> hourlyWeatherData,
+      String unit) {
     this.width = width;
     this.height = height;
     this.location = location;
@@ -53,7 +53,6 @@ public class HourlyWeatherBox {
     hourlyWeatherStackContainer.setSpacing(20);
 
     for (WeatherData hourlyWeather : hourlyWeatherData) {
-        
       WeatherDataController weatherDataController = new WeatherDataController(hourlyWeather, unit);
       WeatherUtils weatherUtils = new WeatherUtils();
 
@@ -63,9 +62,9 @@ public class HourlyWeatherBox {
       hourlyWeatherStack.setAlignment(Pos.TOP_CENTER);
 
       String dateTimeString = weatherUtils.getLocalTime(hourlyWeather.getTimestamp(), hourlyWeather.getTimeOffset());
-      LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")); 
+      LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
       Text forecastHour = new Text(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-      forecastHour.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+      forecastHour.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
       ImageView hourlyWeatherIcon = new ImageView(
           new Image(getClass().getResourceAsStream("/weather-91.png")));
@@ -82,7 +81,6 @@ public class HourlyWeatherBox {
       hourlyPosIcon.setPreserveRatio(true);
 
       Text hourlyPosText = weatherDataController.getWeatherPrecipitationPercentage();
-      hourlyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       HBox hourlyWind = new HBox();
       hourlyWind.setPrefWidth(width / 8);
@@ -94,19 +92,11 @@ public class HourlyWeatherBox {
       hourlyWindIcon.setPreserveRatio(true);
 
       Text hourlyWindText = weatherDataController.getWeatherWindSpeed();
-      hourlyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-      VBox.setMargin(hourlyWindText, new Insets(0, 4, 0, 0));
 
-      ImageView hourlyWindDirectionIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
-      hourlyWindDirectionIcon.setFitHeight(14);
-      hourlyWindDirectionIcon.setPreserveRatio(true);
-      Rotate hourlyRotate = new Rotate(180, 7, 7);
-      hourlyWindDirectionIcon.getTransforms().add(hourlyRotate);
+      ImageView hourlyWindDirectionIcon = weatherDataController.getWeatherWindDir();
 
       Text hourlyTemp = weatherDataController.getWeatherTemp();
       hourlyTemp.setFont(Font.font("Futura", FontWeight.BOLD, 14));
-      VBox.setMargin(hourlyTemp, new Insets(10, 0, 0, 0));
 
       Rectangle hourlyTempSpan = new Rectangle(12, 52);
       hourlyTempSpan.setFill(Color.BLACK);
