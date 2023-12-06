@@ -56,9 +56,11 @@ public class WeatherDataService {
                 float latValue = (float) json.getJSONObject("coord").getDouble("lat");
                 float lonValue = (float) json.getJSONObject("coord").getDouble("lon");
                 String weatherDesc = json.getJSONArray("weather").getJSONObject(0).getString("description");
-
+                int sunrise = json.getJSONObject("sys").getInt("sunrise");
+                int sunset = json.getJSONObject("sys").getInt("sunset");
+                
                 WeatherData weatherData = new WeatherData(timestamp, timeOffset, temp, tempFeelsLike, windDir,
-                        windSpeed, precipitation, latValue, lonValue, weatherDesc, icon);
+                        windSpeed, precipitation, latValue, lonValue, weatherDesc, icon, sunrise, sunset);
 
                 return weatherData;
                 
@@ -98,8 +100,9 @@ public class WeatherDataService {
                     String icon = forecastObj.getJSONArray("weather").getJSONObject(0).optString("icon");
                     double temp = forecastObj.getJSONObject("main").optDouble("temp");
                     float precipitationPerc = forecastObj.optFloat("pop");
-                            
-                    WeatherData weatherData = new WeatherData(timestamp, temp, windSpeed, icon, precipitationPerc);
+                    int windDir = forecastObj.optInt("wind_deg");
+                    
+                    WeatherData weatherData = new WeatherData(timestamp, temp, windSpeed, icon, precipitationPerc, windDir);
                     _3HourlyWeatherForecast.add(weatherData);
                 }                      
             }       
@@ -139,8 +142,9 @@ public class WeatherDataService {
                     float precipitationPerc = dailyForecast.optFloat("pop");
                     double minTemp = dailyForecast.getJSONObject("temp").getDouble("min");
                     double maxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
-
-                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp);
+                    int windDir = dailyForecast.optInt("wind_deg");
+                    
+                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp, windDir);
                     weeklyWeatherForecast.add(weatherData);
                 }                        
             }       

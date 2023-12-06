@@ -26,6 +26,8 @@ public class WeatherData {
     private float precipitationPerc;
     private String weatherDesc;
     private String icon;
+    private int sunrise;
+    private int sunset;
 
     /**
      * Constructs a {@code WeatherData} object containing weather information.
@@ -33,12 +35,14 @@ public class WeatherData {
      * @param timestamp         The timestamp representing the current time in Unix format (UTC).
      * @param windSpeed         The wind speed in meters per second.
      * @param icon              The icon code representing the weather condition.
+     * @param windDir           The wind direction in degrees.
      */
     
-    public WeatherData(int timestamp, float windSpeed, String icon) {
+    public WeatherData(int timestamp, float windSpeed, String icon, int windDir) {
         this.timestamp = timestamp;
         this.windSpeed = windSpeed;
         this.icon = icon;
+        this.windDir = windDir;
     }
     
     /**
@@ -54,21 +58,24 @@ public class WeatherData {
      * @param precipitation     The intensity of precipitation in millimeters.
      * @param lat               The latitude of the measured location.
      * @param lon               The longitude of the measured location.
-     * @param weatherDesc       A brief description of the weather condition.   
+     * @param weatherDesc       A brief description of the weather condition. 
+     * @param sunrise           The sunrise time in Unix format (UTC).
+     * @param sunset           The sunset time in Unix format (UTC).
      */
     
     public WeatherData(int timestamp, int timeOffset, double temp, double tempFeelsLike, int windDir,
                        float windSpeed, float precipitation, float lat, float lon,
-                       String weatherDesc, String icon) {
-        this(timestamp, windSpeed, icon);
+                       String weatherDesc, String icon, int sunrise, int sunset) {
+        this(timestamp, windSpeed, icon, windDir);
         this.temp = temp;
         this.timeOffset = timeOffset;
         this.tempFeelsLike = tempFeelsLike;
-        this.windDir = windDir;
         this.precipitation = precipitation;
         this.lat = lat;
         this.lon = lon;
         this.weatherDesc = weatherDesc;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
     }
       
     /**
@@ -78,9 +85,10 @@ public class WeatherData {
      * @param windSpeed             The wind speed in meters per second.
      * @param icon                  The icon code representing the weather condition.
      * @param precipitationPerc     The probability of precipitation.
+     * @param windDir           The wind direction in degrees.
      */
-    public WeatherData(int timestamp, double temp, float windSpeed, String icon, float precipitationPerc) {
-        this(timestamp, windSpeed, icon);
+    public WeatherData(int timestamp, double temp, float windSpeed, String icon, float precipitationPerc, int windDir) {
+        this(timestamp, windSpeed, icon, windDir);
         this.temp = temp;
         this.precipitationPerc = precipitationPerc;
     } 
@@ -94,9 +102,10 @@ public class WeatherData {
      * @param precipitationPerc     The probability of precipitation.
      * @param minTemp               The minimum temperature of the day in Kelvin.
      * @param maxTemp               The maximum temperature of the day in Kelvin.
+     * @param windDir           The wind direction in degrees.
      */
-    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp) {
-        this(timestamp, windSpeed, icon);
+    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp, int windDir) {
+        this(timestamp, windSpeed, icon, windDir);
         this.precipitationPerc = precipitationPerc;
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -158,6 +167,14 @@ public class WeatherData {
 
     public double getMaxTemp() {
         return maxTemp;
+    }
+    
+    public int getSunrise() {
+        return sunrise;
+    }
+    
+    public int getSunset() {
+        return sunset;
     }
     
     // SETTERS for WeatherData Temperature Feilds

@@ -188,6 +188,8 @@ public class WeatherApp extends Application {
       System.out.println("Longitude: " + currentWeather.getLon());
       System.out.println("Weather Description: " + currentWeather.getWeatherDesc());
       System.out.println("Icon: " + currentWeather.getIcon());
+      System.out.println("Sunrise: " + currentWeather.getSunrise());
+      System.out.println("Sunset: " + currentWeather.getSunset());
     } else {
       System.out.println("Failed to fetch weather data for the specified location.");
     }
@@ -199,6 +201,7 @@ public class WeatherApp extends Application {
       System.out.println("Icon: " + data.getIcon());
       System.out.println("Temperature: " + data.getTemp());
       System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
+      System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
       System.out.println("--------------------------------------------");
     }
 
@@ -210,6 +213,7 @@ public class WeatherApp extends Application {
       System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
       System.out.println("Min Temp: " + data.getMinTemp());
       System.out.println("Max Temp: " + data.getMaxTemp());
+      System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
       System.out.println("---------------------------------");
     }
   }

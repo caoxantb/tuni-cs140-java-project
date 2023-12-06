@@ -38,9 +38,13 @@ public class WeatherDataServiceTest {
         assertNotNull(weatherData.getLon());
         assertNotNull(weatherData.getWeatherDesc());
         assertNotNull(weatherData.getIcon());
+        assertNotNull(weatherData.getSunrise());
+        assertNotNull(weatherData.getSunset());
 
         // Check if timestamp is a positive value
         assertTrue(weatherData.getTimestamp() > 0);
+        assertTrue(weatherData.getSunset() > 0);
+        assertTrue(weatherData.getSunrise() > 0);
 
         // Check temperature ranges
         assertTrue(weatherData.getTemp() >= -273); // In Celsius, absolute zero is -273°C
@@ -87,6 +91,7 @@ public class WeatherDataServiceTest {
             assertNotNull(weatherData.getWindSpeed());
             assertNotNull(weatherData.getPrecipitation());
             assertNotNull(weatherData.getIcon());
+            assertNotNull(weatherData.getWindDir());
             
             // Check if timestamp is a positive value
             assertTrue(weatherData.getTimestamp() > 0);
@@ -129,6 +134,7 @@ public class WeatherDataServiceTest {
             assertNotNull(weatherData.getWindSpeed());
             assertNotNull(weatherData.getPrecipitation());
             assertNotNull(weatherData.getIcon());
+            assertNotNull(weatherData.getWindDir());
             
             // Check if timestamp is a positive value
             assertTrue(weatherData.getTimestamp() > 0);
