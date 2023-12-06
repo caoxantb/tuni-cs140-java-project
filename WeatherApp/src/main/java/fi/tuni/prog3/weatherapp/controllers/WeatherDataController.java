@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package fi.tuni.prog3.weatherapp.controllers;
 
 import fi.tuni.prog3.weatherapp.models.WeatherData;
@@ -37,6 +34,17 @@ public class WeatherDataController {
     return currentDay;
   }
 
+  public Text getWeatherWeekDay() {
+    int timestamp = weather.getTimestamp();
+    int timeOffset = weather.getTimeOffset();
+    String weekDayString = weatherUtils.getWeekDay(timestamp, timeOffset);
+    
+    String truncatedWeekDay = (weekDayString.length() >= 10) ? weekDayString.substring(0, 10) : weekDayString;   
+    Text weekDay = new Text(truncatedWeekDay);
+    weekDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+    return weekDay;
+  }
+  
     public Text getWeatherLocalTime() {
     int timestamp = weather.getTimestamp();
     int timeOffset = weather.getTimeOffset();
@@ -52,7 +60,23 @@ public class WeatherDataController {
     temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
     return temp;
   }
+  
+  public Text getWeatherMinTemp() {
+    int tempInt = (int) Math.round(weather.getMinTemp());
+    String tempUnit = unit == "imperial" ? "F" : "C";
+    Text temp = new Text(String.format("%d°%s", tempInt, tempUnit));
+    temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
+    return temp;
+  }
 
+  public Text getWeatherMaxTemp() {
+    int tempInt = (int) Math.round(weather.getMaxTemp());
+    String tempUnit = unit == "imperial" ? "F" : "C";
+    Text temp = new Text(String.format("%d°%s", tempInt, tempUnit));
+    temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
+    return temp;
+  }
+  
   public Text getWeatherDescription() {
     String weatherDesc = weather.getWeatherDesc();
     Text desc = new Text(Character.toUpperCase(weatherDesc.charAt(0)) + weatherDesc.substring(1));

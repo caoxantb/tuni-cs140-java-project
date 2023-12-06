@@ -2,10 +2,12 @@
 package fi.tuni.prog3.weatherapp.utilities;
 
 import fi.tuni.prog3.weatherapp.models.WeatherData;
+import java.time.DayOfWeek;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 
@@ -94,4 +96,20 @@ public class WeatherUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         return localDateTime.format(formatter);
     }   
+    
+    /**
+     * Returns the week day in string format based on the provided timestamp and time offset.
+     * 
+     * @param timestamp     The timestamp representing the time in Unix format (UTC).
+     * @param timeOffset    The time offset in seconds from UTC.
+     * @return              The local time in the specified format.
+     */
+    public String getWeekDay(int timestamp, int timeOffset) {
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        instant = instant.plusSeconds(timeOffset); 
+
+        DayOfWeek dayOfWeek = instant.atOffset(ZoneOffset.UTC).getDayOfWeek();
+
+        return dayOfWeek.toString();
+    }
 }

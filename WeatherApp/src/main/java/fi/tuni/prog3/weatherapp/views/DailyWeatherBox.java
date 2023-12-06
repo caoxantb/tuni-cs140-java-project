@@ -1,5 +1,6 @@
 package fi.tuni.prog3.weatherapp.views;
 
+import fi.tuni.prog3.weatherapp.controllers.WeatherDataController;
 import java.util.ArrayList;
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
@@ -21,12 +22,14 @@ public class DailyWeatherBox {
   int width, height;
   LocationData location;
   ArrayList<WeatherData> dailyWeatherData;
+//  String unit;
 
   public DailyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> dailyWeatherData) {
     this.width = width;
     this.height = height;
     this.location = location;
     this.dailyWeatherData = dailyWeatherData;
+//    this.unit = unit;
   }
 
   public HBox getContent() {
@@ -46,13 +49,14 @@ public class DailyWeatherBox {
     dailyWeatherStackContainer.setPrefWidth(width);
     dailyWeatherStackContainer.setSpacing(20);
 
-    for (int i = 0; i < 8; i++) {
+    for (WeatherData dailyWeather : dailyWeatherData) {
       VBox dailyWeatherStack = new VBox();
       dailyWeatherStack.setPrefWidth(width / 8);
       dailyWeatherStack.setSpacing(5);
       dailyWeatherStack.setAlignment(Pos.TOP_CENTER);
 
-      Text forecastDay = new Text("17:00");
+      WeatherDataController weatherDataController = new WeatherDataController(dailyWeather, "initial");
+      Text forecastDay = weatherDataController.getWeatherWeekDay();
       forecastDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       ImageView dailyWeatherIcon = new ImageView(
@@ -69,7 +73,7 @@ public class DailyWeatherBox {
       dailyPosIcon.setFitHeight(14);
       dailyPosIcon.setPreserveRatio(true);
 
-      Text dailyPosText = new Text(" 17%");
+      Text dailyPosText = weatherDataController.getWeatherPrecipitation();
       dailyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       HBox dailyWind = new HBox();
@@ -81,7 +85,7 @@ public class DailyWeatherBox {
       dailyWindIcon.setFitHeight(14);
       dailyWindIcon.setPreserveRatio(true);
 
-      Text dailyWindText = new Text(" 8 km/h");
+      Text dailyWindText = weatherDataController.getWeatherWindSpeed();
       dailyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
       VBox.setMargin(dailyWindText, new Insets(0, 4, 0, 0));
 
@@ -92,7 +96,7 @@ public class DailyWeatherBox {
       Rotate dailyRotate = new Rotate(180, 7, 7);
       dailyWindDirectionIcon.getTransforms().add(dailyRotate);
 
-      Text dailyTempMax = new Text("31°");
+      Text dailyTempMax = weatherDataController.getWeatherMaxTemp();
       dailyTempMax.setFont(Font.font("Futura", FontWeight.BOLD, 14));
       VBox.setMargin(dailyTempMax, new Insets(10, 0, 0, 0));
 
@@ -102,7 +106,7 @@ public class DailyWeatherBox {
       dailyTempSpan.setArcHeight(12);
       VBox.setMargin(dailyTempSpan, new Insets(0, 6, 0, 0));
 
-      Text dailyTempMin = new Text("21°");
+      Text dailyTempMin = weatherDataController.getWeatherMinTemp();
       dailyTempMin.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
       dailyPos.getChildren().addAll(dailyPosIcon, dailyPosText);
