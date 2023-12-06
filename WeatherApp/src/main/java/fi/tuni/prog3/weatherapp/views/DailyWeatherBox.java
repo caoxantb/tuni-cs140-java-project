@@ -72,7 +72,7 @@ public class DailyWeatherBox {
       dailyPosIcon.setFitHeight(14);
       dailyPosIcon.setPreserveRatio(true);
 
-      Text dailyPosText = weatherDataController.getWeatherPrecipitation();
+      Text dailyPosText = weatherDataController.getWeatherPrecipitationPercentage();
 
       HBox dailyWind = new HBox();
       dailyWind.setPrefWidth(width / 8);

@@ -97,9 +97,8 @@ public class WeatherDataService {
                     float windSpeed = forecastObj.getJSONObject("wind").optFloat("speed");
                     String icon = forecastObj.getJSONArray("weather").getJSONObject(0).optString("icon");
                     double temp = forecastObj.getJSONObject("main").optDouble("temp");
-                    float precipitationPerc = forecastObj.optJSONObject("rain") != null ?
-                            forecastObj.getJSONObject("rain").optInt("3h") : 0;
-
+                    float precipitationPerc = forecastObj.optFloat("pop");
+                            
                     WeatherData weatherData = new WeatherData(timestamp, temp, windSpeed, icon, precipitationPerc);
                     _3HourlyWeatherForecast.add(weatherData);
                 }                      
@@ -137,7 +136,7 @@ public class WeatherDataService {
                     int timestamp = dailyForecast.getInt("dt");
                     float windSpeed = dailyForecast.getFloat("wind_speed");
                     String icon = dailyForecast.getJSONArray("weather").getJSONObject(0).getString("icon");
-                    float precipitationPerc = dailyForecast.optFloat("rain", 0); // If rain key doesn't exist, default to 0
+                    float precipitationPerc = dailyForecast.optFloat("pop");
                     double minTemp = dailyForecast.getJSONObject("temp").getDouble("min");
                     double maxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
 

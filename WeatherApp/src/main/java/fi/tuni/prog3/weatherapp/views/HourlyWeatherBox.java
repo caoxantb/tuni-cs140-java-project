@@ -81,7 +81,7 @@ public class HourlyWeatherBox {
       hourlyPosIcon.setFitHeight(14);
       hourlyPosIcon.setPreserveRatio(true);
 
-      Text hourlyPosText = weatherDataController.getWeatherPrecipitation();
+      Text hourlyPosText = weatherDataController.getWeatherPrecipitationPercentage();
       hourlyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       HBox hourlyWind = new HBox();
