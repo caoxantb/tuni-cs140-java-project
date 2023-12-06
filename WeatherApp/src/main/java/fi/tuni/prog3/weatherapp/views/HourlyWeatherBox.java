@@ -1,9 +1,13 @@
 package fi.tuni.prog3.weatherapp.views;
 
+import fi.tuni.prog3.weatherapp.controllers.WeatherDataController;
 import java.util.ArrayList;
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
 import fi.tuni.prog3.weatherapp.models.WeatherData;
+import fi.tuni.prog3.weatherapp.utilities.WeatherUtils;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -21,12 +25,14 @@ public class HourlyWeatherBox {
   int width, height;
   LocationData location;
   ArrayList<WeatherData> hourlyWeatherData;
+  String unit;
 
-  public HourlyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> hourlyWeatherData) {
+  public HourlyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> hourlyWeatherData, String unit) {
     this.width = width;
     this.height = height;
     this.location = location;
     this.hourlyWeatherData = hourlyWeatherData;
+    this.unit = unit;
   }
 
   public HBox getContent() {
@@ -46,13 +52,19 @@ public class HourlyWeatherBox {
     hourlyWeatherStackContainer.setPrefWidth(width);
     hourlyWeatherStackContainer.setSpacing(20);
 
-    for (int i = 0; i < 8; i++) {
+    for (WeatherData hourlyWeather : hourlyWeatherData) {
+        
+      WeatherDataController weatherDataController = new WeatherDataController(hourlyWeather, unit);
+      WeatherUtils weatherUtils = new WeatherUtils();
+
       VBox hourlyWeatherStack = new VBox();
       hourlyWeatherStack.setPrefWidth(width / 8);
       hourlyWeatherStack.setSpacing(5);
       hourlyWeatherStack.setAlignment(Pos.TOP_CENTER);
 
-      Text forecastHour = new Text("17:00");
+      String dateTimeString = weatherUtils.getLocalTime(hourlyWeather.getTimestamp(), hourlyWeather.getTimeOffset());
+      LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")); 
+      Text forecastHour = new Text(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
       forecastHour.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       ImageView hourlyWeatherIcon = new ImageView(
@@ -69,7 +81,7 @@ public class HourlyWeatherBox {
       hourlyPosIcon.setFitHeight(14);
       hourlyPosIcon.setPreserveRatio(true);
 
-      Text hourlyPosText = new Text(" 17%");
+      Text hourlyPosText = weatherDataController.getWeatherPrecipitation();
       hourlyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       HBox hourlyWind = new HBox();
@@ -81,7 +93,7 @@ public class HourlyWeatherBox {
       hourlyWindIcon.setFitHeight(14);
       hourlyWindIcon.setPreserveRatio(true);
 
-      Text hourlyWindText = new Text(" 8 km/h");
+      Text hourlyWindText = weatherDataController.getWeatherWindSpeed();
       hourlyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
       VBox.setMargin(hourlyWindText, new Insets(0, 4, 0, 0));
 
@@ -92,7 +104,7 @@ public class HourlyWeatherBox {
       Rotate hourlyRotate = new Rotate(180, 7, 7);
       hourlyWindDirectionIcon.getTransforms().add(hourlyRotate);
 
-      Text hourlyTemp = new Text("29°");
+      Text hourlyTemp = weatherDataController.getWeatherTemp();
       hourlyTemp.setFont(Font.font("Futura", FontWeight.BOLD, 14));
       VBox.setMargin(hourlyTemp, new Insets(10, 0, 0, 0));
 

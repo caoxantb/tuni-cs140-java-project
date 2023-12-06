@@ -35,7 +35,7 @@ public class MainContent {
     Pane mainContent = new Pane();
 
     HBox currentWeatherBox = new CurrentWeatherBox(width, height, location, currentWeatherData, unit).getContent();
-    HBox hourlyWeatherBox = new HourlyWeatherBox(width, height, location, hourlyWeatherData).getContent();
+    HBox hourlyWeatherBox = new HourlyWeatherBox(width, height, location, hourlyWeatherData, unit).getContent();
     HBox dailyWeatherBox = new DailyWeatherBox(width, height, location, dailyWeatherData, unit).getContent();
 
     VBox container = new VBox();
