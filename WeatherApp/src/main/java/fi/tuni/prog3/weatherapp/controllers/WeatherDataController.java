@@ -1,12 +1,15 @@
 
 package fi.tuni.prog3.weatherapp.controllers;
 
+import java.time.Instant;
+
 import fi.tuni.prog3.weatherapp.models.WeatherData;
 import fi.tuni.prog3.weatherapp.utilities.WeatherUtils;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -27,10 +30,12 @@ public class WeatherDataController {
   }
 
   public Text getWeatherLocalDay() {
-    int timestamp = weather.getTimestamp();
+    int timestamp = (int) Instant.now().getEpochSecond();
     int timeOffset = weather.getTimeOffset();
-    Text currentDay = new Text(weatherUtils.getLocalTime(timestamp, timeOffset).substring(0, 10));
-    currentDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+    String currentDayString = weatherUtils.getLocalTime(timestamp, timeOffset).substring(0, 10);
+    String currentDayOfWeekString = weatherUtils.getWeekDay(timestamp, timeOffset);
+    Text currentDay = new Text(String.format("%s, %s", currentDayOfWeekString, currentDayString));
+    currentDay.setFont(Font.font("Futura", FontWeight.BOLD, 14));
     return currentDay;
   }
 
@@ -41,15 +46,15 @@ public class WeatherDataController {
     
     String truncatedWeekDay = (weekDayString.length() >= 10) ? weekDayString.substring(0, 10) : weekDayString;   
     Text weekDay = new Text(truncatedWeekDay);
-    weekDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+    weekDay.setFont(Font.font("Futura", FontWeight.BOLD, 14));
     return weekDay;
   }
   
     public Text getWeatherLocalTime() {
-    int timestamp = weather.getTimestamp();
+    int timestamp = (int) Instant.now().getEpochSecond();
     int timeOffset = weather.getTimeOffset();
     Text currentTime = new Text(weatherUtils.getLocalTime(timestamp, timeOffset).substring(11, 16));
-    currentTime.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
+    currentTime.setFont(Font.font("Futura", FontWeight.BOLD, 14));
     return currentTime;
   }
 
@@ -65,7 +70,7 @@ public class WeatherDataController {
     int tempInt = (int) Math.round(weather.getMinTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
     Text temp = new Text(String.format("%d°%s", tempInt, tempUnit));
-    temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
+    temp.setFont(Font.font("Futura", FontWeight.BOLD, 14));
     return temp;
   }
 
@@ -73,7 +78,8 @@ public class WeatherDataController {
     int tempInt = (int) Math.round(weather.getMaxTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
     Text temp = new Text(String.format("%d°%s", tempInt, tempUnit));
-    temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
+    temp.setFont(Font.font("Futura", FontWeight.BOLD, 14));
+    VBox.setMargin(temp, new Insets(10, 0, 0, 0));
     return temp;
   }
   
@@ -94,7 +100,8 @@ public class WeatherDataController {
 
   public Text getWeatherTempFeelsLike() {
     int tempFeelsLikeInt = (int) Math.round(weather.getTempFeelsLike());
-    Text tempFeelsLike = new Text(String.format("Feels like %d°", tempFeelsLikeInt));
+    String tempUnit = unit == "imperial" ? "F" : "C";
+    Text tempFeelsLike = new Text(String.format("Feels like %d°%s", tempFeelsLikeInt, tempUnit));
     tempFeelsLike.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
     HBox.setMargin(tempFeelsLike, new Insets(0, 12, 0, 0));
     return tempFeelsLike;

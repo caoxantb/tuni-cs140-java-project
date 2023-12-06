@@ -16,20 +16,20 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 
 public class DailyWeatherBox {
   int width, height;
   LocationData location;
   ArrayList<WeatherData> dailyWeatherData;
-//  String unit;
+  String unit;
 
-  public DailyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> dailyWeatherData) {
+  public DailyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> dailyWeatherData,
+      String unit) {
     this.width = width;
     this.height = height;
     this.location = location;
     this.dailyWeatherData = dailyWeatherData;
-//    this.unit = unit;
+    this.unit = unit;
   }
 
   public HBox getContent() {
@@ -55,9 +55,8 @@ public class DailyWeatherBox {
       dailyWeatherStack.setSpacing(5);
       dailyWeatherStack.setAlignment(Pos.TOP_CENTER);
 
-      WeatherDataController weatherDataController = new WeatherDataController(dailyWeather, "initial");
+      WeatherDataController weatherDataController = new WeatherDataController(dailyWeather, unit);
       Text forecastDay = weatherDataController.getWeatherWeekDay();
-      forecastDay.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       ImageView dailyWeatherIcon = new ImageView(
           new Image(getClass().getResourceAsStream("/weather-91.png")));
@@ -74,7 +73,6 @@ public class DailyWeatherBox {
       dailyPosIcon.setPreserveRatio(true);
 
       Text dailyPosText = weatherDataController.getWeatherPrecipitation();
-      dailyPosText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
 
       HBox dailyWind = new HBox();
       dailyWind.setPrefWidth(width / 8);
@@ -86,19 +84,10 @@ public class DailyWeatherBox {
       dailyWindIcon.setPreserveRatio(true);
 
       Text dailyWindText = weatherDataController.getWeatherWindSpeed();
-      dailyWindText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-      VBox.setMargin(dailyWindText, new Insets(0, 4, 0, 0));
 
-      ImageView dailyWindDirectionIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
-      dailyWindDirectionIcon.setFitHeight(14);
-      dailyWindDirectionIcon.setPreserveRatio(true);
-      Rotate dailyRotate = new Rotate(180, 7, 7);
-      dailyWindDirectionIcon.getTransforms().add(dailyRotate);
+      ImageView dailyWindDirectionIcon = weatherDataController.getWeatherWindDir();
 
       Text dailyTempMax = weatherDataController.getWeatherMaxTemp();
-      dailyTempMax.setFont(Font.font("Futura", FontWeight.BOLD, 14));
-      VBox.setMargin(dailyTempMax, new Insets(10, 0, 0, 0));
 
       Rectangle dailyTempSpan = new Rectangle(12, 52);
       dailyTempSpan.setFill(Color.BLACK);
