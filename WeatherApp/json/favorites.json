@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "61.498020\u002623.760311",
+    "city": "Tampere",
+    "country": "Finland",
+    "countryCode": "FI",
+    "state": "",
+    "flag": "https://flagcdn.com/w320/fi.png",
+    "lat": 61.49802,
+    "lon": 23.760311
+  },
+  {
+    "id": "21.029449\u0026105.854446",
+    "city": "Hanoi",
+    "country": "Vietnam",
+    "countryCode": "VN",
+    "state": "",
+    "flag": "https://flagcdn.com/w320/vn.png",
+    "lat": 21.02945,
+    "lon": 105.85445
+  }
+]

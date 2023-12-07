@@ -215,11 +215,22 @@ public class LocationDataService implements iReadAndWriteToFile {
     JsonArray history = readFromFile(HISTORY_PATH);
     JsonElement newlySearchElement = gson.toJsonTree(newLocation);
 
-    history.add(newlySearchElement);
-    if (history.size() > 20) {
-      history.remove(0);
+    JsonArray updatedHistoryLocations = new JsonArray();
+
+    history.forEach(location -> {
+      JsonObject locationObject = location.getAsJsonObject();
+      String locationId = locationObject.get("id").getAsString();
+      if (!locationId.equals(newLocation.getId())) {
+        updatedHistoryLocations.add(locationObject);
+      }
+    });
+
+    updatedHistoryLocations.add(newlySearchElement);
+
+    if (updatedHistoryLocations.size() > 20) {
+      updatedHistoryLocations.remove(0);
     }
-    writeToFile(HISTORY_PATH, history);
+    writeToFile(HISTORY_PATH, updatedHistoryLocations);
   }
 
   public ArrayList<LocationData> getHistory() {
@@ -240,7 +251,7 @@ public class LocationDataService implements iReadAndWriteToFile {
     JsonArray history = readFromFile(HISTORY_PATH);
     JsonElement lastElement = history.get(history.size() - 1);
     LocationData latestSearchLocation = gson.fromJson(lastElement, LocationData.class);
-    
+
     return latestSearchLocation;
   }
 }
