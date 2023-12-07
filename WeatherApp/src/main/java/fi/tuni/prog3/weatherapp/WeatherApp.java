@@ -172,27 +172,27 @@ public class WeatherApp extends Application {
     WeatherDataService weatherService = new WeatherDataService();
 
     // Coordinates for a specific location
-    float latitude = 44.34f;
-    float longitude = 10.99f;
+    float latitude = (float) 61.498020;
+    float longitude = (float) 23.760311;
 
-    WeatherData currentWeather = weatherService.getCurrentWeatherData(latitude, longitude);
-    if (currentWeather != null) {
-      System.out.println("Timestamp: " + currentWeather.getTimestamp());
-      System.out.println("Time Offset: " + currentWeather.getTimeOffset());
-      System.out.println("Temperature: " + currentWeather.getTemp() + " K");
-      System.out.println("Feels Like: " + currentWeather.getTempFeelsLike() + " K");
-      System.out.println("Wind Speed: " + currentWeather.getWindSpeed() + " m/s");
-      System.out.println("Wind Direction: " + currentWeather.getWindDir() + " degrees");
-      System.out.println("Precipitation: " + currentWeather.getPrecipitation() + " mm");
-      System.out.println("Latitude: " + currentWeather.getLat());
-      System.out.println("Longitude: " + currentWeather.getLon());
-      System.out.println("Weather Description: " + currentWeather.getWeatherDesc());
-      System.out.println("Icon: " + currentWeather.getIcon());
-      System.out.println("Sunrise: " + currentWeather.getSunrise());
-      System.out.println("Sunset: " + currentWeather.getSunset());
-    } else {
-      System.out.println("Failed to fetch weather data for the specified location.");
-    }
+    // WeatherData currentWeather = weatherService.getCurrentWeatherData(latitude, longitude);
+    // if (currentWeather != null) {
+    //   System.out.println("Timestamp: " + currentWeather.getTimestamp());
+    //   System.out.println("Time Offset: " + currentWeather.getTimeOffset());
+    //   System.out.println("Temperature: " + currentWeather.getTemp() + " K");
+    //   System.out.println("Feels Like: " + currentWeather.getTempFeelsLike() + " K");
+    //   System.out.println("Wind Speed: " + currentWeather.getWindSpeed() + " m/s");
+    //   System.out.println("Wind Direction: " + currentWeather.getWindDir() + " degrees");
+    //   System.out.println("Precipitation: " + currentWeather.getPrecipitation() + " mm");
+    //   System.out.println("Latitude: " + currentWeather.getLat());
+    //   System.out.println("Longitude: " + currentWeather.getLon());
+    //   System.out.println("Weather Description: " + currentWeather.getWeatherDesc());
+    //   System.out.println("Icon: " + currentWeather.getIcon());
+    //   System.out.println("Sunrise: " + currentWeather.getSunrise());
+    //   System.out.println("Sunset: " + currentWeather.getSunset());
+    // } else {
+    //   System.out.println("Failed to fetch weather data for the specified location.");
+    // }
 
     ArrayList<WeatherData> forecastData = weatherService.get5day3HourlyForecast(latitude, longitude);
     for (WeatherData data : forecastData) {
@@ -205,16 +205,16 @@ public class WeatherApp extends Application {
       System.out.println("--------------------------------------------");
     }
 
-    ArrayList<WeatherData> weeklyForecast = weatherService.getWeeklyForecast(latitude, longitude);
-    for (WeatherData data : weeklyForecast) {
-      System.out.println("Timestamp: " + data.getTimestamp());
-      System.out.println("Wind Speed: " + data.getWindSpeed());
-      System.out.println("Icon: " + data.getIcon());
-      System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
-      System.out.println("Min Temp: " + data.getMinTemp());
-      System.out.println("Max Temp: " + data.getMaxTemp());
-      System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
-      System.out.println("---------------------------------");
-    }
+    // ArrayList<WeatherData> weeklyForecast = weatherService.getWeeklyForecast(latitude, longitude);
+    // for (WeatherData data : weeklyForecast) {
+    //   System.out.println("Timestamp: " + data.getTimestamp());
+    //   System.out.println("Wind Speed: " + data.getWindSpeed());
+    //   System.out.println("Icon: " + data.getIcon());
+    //   System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
+    //   System.out.println("Min Temp: " + data.getMinTemp());
+    //   System.out.println("Max Temp: " + data.getMaxTemp());
+    //   System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
+    //   System.out.println("---------------------------------");
+    // }
   }
 }

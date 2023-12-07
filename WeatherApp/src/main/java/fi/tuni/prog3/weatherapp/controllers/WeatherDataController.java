@@ -102,7 +102,6 @@ public class WeatherDataController {
     float precipitationPercentageFloat = weather.getPrecipitationPerc() * 100;
     Text precipitationPercentage = new Text(String.format(" %.0f%%", precipitationPercentageFloat));
     precipitationPercentage.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-    HBox.setMargin(precipitationPercentage, new Insets(0, 20, 0, 0));
     return precipitationPercentage;
   }
 

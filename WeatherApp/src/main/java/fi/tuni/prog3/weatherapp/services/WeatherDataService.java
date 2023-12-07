@@ -92,7 +92,7 @@ public class WeatherDataService {
                 JSONObject json = new JSONObject(response.toString());
                 JSONArray forecastList = json.getJSONArray("list");
             
-                for (int i = 0; i < forecastList.length(); i++) {
+                for (int i = 0; i < 8; i++) {
                     JSONObject forecastObj = forecastList.getJSONObject(i);
 
                     int timestamp = forecastObj.optInt("dt");
@@ -100,7 +100,7 @@ public class WeatherDataService {
                     String icon = forecastObj.getJSONArray("weather").getJSONObject(0).optString("icon");
                     double temp = forecastObj.getJSONObject("main").optDouble("temp");
                     float precipitationPerc = forecastObj.optFloat("pop");
-                    int windDir = forecastObj.optInt("wind_deg");
+                    int windDir = forecastObj.getJSONObject("wind").optInt("deg");
                     
                     WeatherData weatherData = new WeatherData(timestamp, temp, windSpeed, icon, precipitationPerc, windDir);
                     _3HourlyWeatherForecast.add(weatherData);
