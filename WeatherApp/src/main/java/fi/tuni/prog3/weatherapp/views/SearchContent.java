@@ -2,11 +2,8 @@ package fi.tuni.prog3.weatherapp.views;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
-import fi.tuni.prog3.weatherapp.services.LocationDataService;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
@@ -20,31 +17,21 @@ public class SearchContent {
   ArrayList<LocationData> history, favorites;
   int width;
   EventHandler<MouseEvent> searchEvent;
+  VBox searchBox;
 
-  public SearchContent(int width, ArrayList<LocationData> history, ArrayList<LocationData> favorites,
+  public SearchContent(int width, VBox searchBox, ArrayList<LocationData> history, ArrayList<LocationData> favorites,
       EventHandler<MouseEvent> searchEvent) {
     this.width = width;
     this.history = history;
     this.favorites = favorites;
     this.searchEvent = searchEvent;
-    // this.latestSearchLocation = latestSearchLocation;
-    // this.locationDataService = locationDataService;
+    this.searchBox = searchBox;
   }
 
   public HBox getContent() {
-    VBox searchBox = new VBox(10);
     VBox searchResultsBox = new VBox(10);
     VBox historyBox = new VBox(10);
     VBox favoritesBox = new VBox(10);
-
-    searchBox
-        .setStyle("-fx-background-color: linear-gradient(to bottom right, rgba(196, 196, 196, 0.7), transparent);");
-    Text labelSearch = new Text("Search");
-    searchBox.setPadding(new Insets(10));
-    labelSearch.setFont(Font.font("Futura", FontWeight.BOLD, 16));
-    searchBox.getChildren().add(labelSearch);
-    searchBox.setPrefWidth(1080 / 2);
-    searchBox.setPrefHeight(720 / 2);
 
     searchResultsBox
         .setStyle("-fx-background-color: linear-gradient(to top right, rgba(196, 196, 196, 0.7), transparent);");
