@@ -19,7 +19,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -40,19 +39,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 public class WeatherApp extends Application {
 
   private static final int WINDOW_HEIGHT = 720;
-  private static final int WINDOW_WIDTH = 1080;
+  private static final int WINDOW_WIDTH = 1280;
   LocationDataService locationDataService = new LocationDataService();
   WeatherDataService weatherDataService = new WeatherDataService();
   LocationUtils locationUtils = new LocationUtils();
   Map<String, String> mapCountry = locationUtils.getMapFromFile("./json/countries.json");
-
   SimpleStringProperty unit = new SimpleStringProperty("initial");
+
   SimpleObjectProperty<LocationData> latestSearchLocation = new SimpleObjectProperty<>(
       locationDataService.getCurrentLocation());
   SimpleFloatProperty latitude = new SimpleFloatProperty(latestSearchLocation.get().getLat());
@@ -67,21 +63,31 @@ public class WeatherApp extends Application {
       FXCollections.observableList(locationDataService.getHistory()));
   SimpleListProperty<LocationData> favorites = new SimpleListProperty<>(
       FXCollections.observableList(locationDataService.getAllFavoriteLocations()));
-  SimpleStringProperty cityQueryValue = new SimpleStringProperty();
+  SimpleListProperty<LocationData> searchResults = new SimpleListProperty<>(
+      FXCollections.emptyObservableList());
+  SimpleStringProperty cityQueryValue = new SimpleStringProperty("");
   SimpleStringProperty countryQueryValue = new SimpleStringProperty("Choose a country (optional)");
   SimpleStringProperty stateQueryValue = new SimpleStringProperty("Choose a state (optional)");
+  SimpleStringProperty setFavorite = new SimpleStringProperty(
+      locationDataService.isFavoriteLocation(latestSearchLocation.get().getId())
+          ? "Remove from favorites"
+          : "Add to favorites");
 
   TabPane tabpane = new TabPane();
 
   Tab main = new Tab("Weather Report");
   Button unitSystemButton = new Button();
+  Button setFavoriteButton = new Button();
 
   @Override
   public void start(Stage stage) throws IOException {
-    unitSystemButton.setText("Unit system!");
-    Pane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
+    unitSystemButton.setText("Convert unit system");
+    setFavoriteButton.setText(setFavorite.get());
+
+    ScrollPane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
         currentWeatherData.get(),
-        new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(), unitSystemButton)
+        new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(), unitSystemButton,
+        setFavoriteButton)
         .getContent();
 
     EventHandler<ActionEvent> unitSystemConverter = event -> {
@@ -91,10 +97,10 @@ public class WeatherApp extends Application {
         unit.set("imperial");
       }
       try {
-        Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
+        ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
             currentWeatherData.get(),
             new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(),
-            unitSystemButton)
+            unitSystemButton, setFavoriteButton)
             .getContent();
         main.setContent(newMainContent);
       } catch (IOException e) {
@@ -103,7 +109,21 @@ public class WeatherApp extends Application {
       System.out.println("Unit system changed to: " + unit.get());
     };
 
+    EventHandler<ActionEvent> changeFavoriteStatus = event -> {
+      if (setFavorite.get().equals("Add to favorites")) {
+        locationDataService.addFavoriteLocation(latestSearchLocation.get());
+        setFavorite.set("Remove from favorites");
+      } else {
+        locationDataService.removeFavoriteLocation(latestSearchLocation.get().getId());
+        setFavorite.set("Add to favorites");
+      }
+      favorites
+          .set(FXCollections.observableList(locationDataService.getAllFavoriteLocations()));
+      setFavoriteButton.setText(setFavorite.get());
+    };
+
     unitSystemButton.setOnAction(unitSystemConverter);
+    setFavoriteButton.setOnAction(changeFavoriteStatus);
 
     main.setContent(mainContent);
 
@@ -111,12 +131,45 @@ public class WeatherApp extends Application {
 
     Tab search = new Tab("Search and History");
 
+    EventHandler<MouseEvent> searchEvent = event -> {
+      unit.set("initial");
+      try {
+        HBox searchTabBox = (HBox) event.getSource();
+        LocationData newLocation = (LocationData) searchTabBox.getProperties().get("location");
+        latestSearchLocation.set(newLocation);
+        locationDataService.addToHistory(newLocation);
+        latitude.set(latestSearchLocation.get().getLat());
+        longitude.set(latestSearchLocation.get().getLon());
+        currentWeatherData.set(weatherDataService.getCurrentWeatherData(latitude.get(),
+            longitude.get()));
+        hourlyWeatherData.set(
+            FXCollections.observableList(weatherDataService.get5day3HourlyForecast(latitude.get(),
+                longitude.get())));
+        dailyWeatherData
+            .set(FXCollections.observableList(weatherDataService.getWeeklyForecast(latitude.get(),
+                longitude.get())));
+        history
+            .set(FXCollections.observableList(locationDataService.getHistory()));
+
+        ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT,
+            latestSearchLocation.get(),
+            currentWeatherData.get(),
+            new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(),
+            unitSystemButton, setFavoriteButton)
+            .getContent();
+        main.setContent(newMainContent);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      tabpane.getSelectionModel().select(0);
+    };
+
     VBox searchBox = new VBox(10);
     searchBox
         .setStyle("-fx-background-color: linear-gradient(to bottom right, rgba(196, 196, 196, 0.7), transparent);");
     Text labelSearch = new Text("Search");
     searchBox.setPadding(new Insets(10));
-    labelSearch.setFont(Font.font("Futura", FontWeight.BOLD, 16));
+    labelSearch.setFont(Font.font("Futura", FontWeight.BOLD, 20));
     searchBox.getChildren().add(labelSearch);
     searchBox.setPrefWidth(1080 / 2);
     searchBox.setPrefHeight(720 / 2);
@@ -178,51 +231,53 @@ public class WeatherApp extends Application {
     searchButtonBox.setAlignment(Pos.CENTER_RIGHT);
     searchButtonBox.setPrefWidth(1080 / 2);
 
-    searchBox.getChildren().addAll(cityQuery, countryQuery, stateQuery, searchButtonBox);
-
-    EventHandler<MouseEvent> searchEvent = event -> {
-      unit.set("initial");
+    searchButton.setOnAction(event -> {
+      cityQueryValue.set(cityTextField.getText());
       try {
-        HBox searchTabBox = (HBox) event.getSource();
-        LocationData newLocation = (LocationData) searchTabBox.getProperties().get("location");
-        latestSearchLocation.set(newLocation);
-        locationDataService.addToHistory(newLocation);
-        latitude.set(latestSearchLocation.get().getLat());
-        longitude.set(latestSearchLocation.get().getLon());
-        currentWeatherData.set(weatherDataService.getCurrentWeatherData(latitude.get(),
-            longitude.get()));
-        hourlyWeatherData.set(
-            FXCollections.observableList(weatherDataService.get5day3HourlyForecast(latitude.get(),
-                longitude.get())));
-        dailyWeatherData
-            .set(FXCollections.observableList(weatherDataService.getWeeklyForecast(latitude.get(),
-                longitude.get())));
-        history
-            .set(FXCollections.observableList(locationDataService.getHistory()));
+        if (countryQueryValue.get().equals("Choose a country (optional)")) {
+          System.out.println("run here 1");
+          searchResults
+              .set(FXCollections.observableList(locationDataService.queryLocation(cityQueryValue.get())));
 
-        Pane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT,
-            latestSearchLocation.get(),
-            currentWeatherData.get(),
-            new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(),
-            unitSystemButton)
-            .getContent();
-        main.setContent(newMainContent);
+        } else if (!countryQueryValue.get().equals("United States") || (countryQueryValue.get().equals("United States")
+            && stateQueryValue.get().equals("Choose a state (optional)"))) {
+          searchResults
+              .set(FXCollections
+                  .observableList(locationDataService.queryLocation(cityQueryValue.get(),
+                      mapCountry.get(countryQueryValue.get()))));
+        } else {
+          System.out.println("run here 3");
+          searchResults
+              .set(FXCollections
+                  .observableList(
+                      locationDataService.queryLocation(cityQueryValue.get(), mapCountry.get(countryQueryValue.get()),
+                          stateQueryValue.get())));
+        }
+        SearchContent newSearchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(searchResults),
+            new ArrayList<>(history),
+            new ArrayList<>(favorites),
+            searchEvent);
+
+        search.setContent(newSearchContent.getContent());
       } catch (IOException e) {
         e.printStackTrace();
       }
-      tabpane.getSelectionModel().select(0);
-    };
+    });
+
+    searchBox.getChildren().addAll(cityQuery, countryQuery, stateQuery, searchButtonBox);
 
     search.selectedProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
-        SearchContent newSearchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(history),
+        SearchContent newSearchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(searchResults),
+            new ArrayList<>(history),
             new ArrayList<>(favorites),
             searchEvent);
         search.setContent(newSearchContent.getContent());
       }
     });
 
-    SearchContent searchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(history),
+    SearchContent searchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(searchResults),
+        new ArrayList<>(history),
         new ArrayList<>(favorites),
         searchEvent);
 
@@ -233,83 +288,16 @@ public class WeatherApp extends Application {
     tabpane.getTabs().addAll(main, search);
 
     ScrollPane scrollPane = new ScrollPane(tabpane);
-    scrollPane.setPrefSize(1080, 720);
+    scrollPane.setPrefSize(1280, 720);
     scrollPane.setFitToWidth(true);
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    System.out.println(gson.toJson(locationDataService.queryLocation("Hanoi").get(0)));
-    System.out.println(gson.toJson(locationDataService.queryLocation("London").get(0)));
-    System.out.println(gson.toJson(locationDataService.queryLocation("Paris").get(0)));
-
-    Scene scene = new Scene(scrollPane, WINDOW_WIDTH, WINDOW_HEIGHT);
+    Scene scene = new Scene(tabpane, WINDOW_WIDTH, WINDOW_HEIGHT);
     stage.setScene(scene);
     stage.setTitle("Weather Application");
     stage.show();
   }
 
   public static void main(String[] args) {
-    // test();
     launch();
-  }
-
-  // DEBUGGING APIS
-  private static void test() {
-
-    WeatherDataService weatherService = new WeatherDataService();
-
-    // Coordinates for a specific location
-    float latitude = (float) 61.498020;
-    float longitude = (float) 23.760311;
-
-    // WeatherData currentWeather = weatherService.getCurrentWeatherData(latitude,
-    // longitude);
-    // if (currentWeather != null) {
-    // System.out.println("Timestamp: " + currentWeather.getTimestamp());
-    // System.out.println("Time Offset: " + currentWeather.getTimeOffset());
-    // System.out.println("Temperature: " + currentWeather.getTemp() + " K");
-    // System.out.println("Feels Like: " + currentWeather.getTempFeelsLike() + "
-    // K");
-    // System.out.println("Wind Speed: " + currentWeather.getWindSpeed() + " m/s");
-    // System.out.println("Wind Direction: " + currentWeather.getWindDir() + "
-    // degrees");
-    // System.out.println("Precipitation: " + currentWeather.getPrecipitation() + "
-    // mm");
-    // System.out.println("Latitude: " + currentWeather.getLat());
-    // System.out.println("Longitude: " + currentWeather.getLon());
-    // System.out.println("Weather Description: " +
-    // currentWeather.getWeatherDesc());
-    // System.out.println("Icon: " + currentWeather.getIcon());
-    // System.out.println("Sunrise: " + currentWeather.getSunrise());
-    // System.out.println("Sunset: " + currentWeather.getSunset());
-    // } else {
-    // System.out.println("Failed to fetch weather data for the specified
-    // location.");
-    // }
-
-    ArrayList<WeatherData> forecastData = weatherService.get5day3HourlyForecast(latitude, longitude);
-    for (WeatherData data : forecastData) {
-      System.out.println("Timestamp: " + data.getTimestamp());
-      System.out.println("Wind Speed: " + data.getWindSpeed());
-      System.out.println("Icon: " + data.getIcon());
-      System.out.println("Temperature: " + data.getTemp());
-      System.out.println("Precipitation Percentage: " + data.getPrecipitationPerc());
-      System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
-      System.out.println("--------------------------------------------");
-    }
-
-    // ArrayList<WeatherData> weeklyForecast =
-    // weatherService.getWeeklyForecast(latitude, longitude);
-    // for (WeatherData data : weeklyForecast) {
-    // System.out.println("Timestamp: " + data.getTimestamp());
-    // System.out.println("Wind Speed: " + data.getWindSpeed());
-    // System.out.println("Icon: " + data.getIcon());
-    // System.out.println("Precipitation Percentage: " +
-    // data.getPrecipitationPerc());
-    // System.out.println("Min Temp: " + data.getMinTemp());
-    // System.out.println("Max Temp: " + data.getMaxTemp());
-    // System.out.println("Wind Direction: " + data.getWindDir() + " degrees");
-    // System.out.println("---------------------------------");
-    // }
   }
 }
