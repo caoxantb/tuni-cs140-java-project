@@ -40,6 +40,7 @@ public class WeatherDataServiceTest {
         assertNotNull(weatherData.getIcon());
         assertNotNull(weatherData.getSunrise());
         assertNotNull(weatherData.getSunset());
+        assertNotNull(weatherData.getId());
 
         // Check if timestamp is a positive value
         assertTrue(weatherData.getTimestamp() > 0);
@@ -92,6 +93,9 @@ public class WeatherDataServiceTest {
             assertNotNull(weatherData.getPrecipitation());
             assertNotNull(weatherData.getIcon());
             assertNotNull(weatherData.getWindDir());
+            assertNotNull(weatherData.getTimeOffset());
+            assertNotNull(weatherData.getId());
+
             
             // Check if timestamp is a positive value
             assertTrue(weatherData.getTimestamp() > 0);
@@ -135,7 +139,8 @@ public class WeatherDataServiceTest {
             assertNotNull(weatherData.getPrecipitation());
             assertNotNull(weatherData.getIcon());
             assertNotNull(weatherData.getWindDir());
-            
+            assertNotNull(weatherData.getId());
+
             // Check if timestamp is a positive value
             assertTrue(weatherData.getTimestamp() > 0);
 

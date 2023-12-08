@@ -43,14 +43,14 @@ public class WeatherDataController {
     int timestamp = weather.getTimestamp();
     int timeOffset = weather.getTimeOffset();
     String weekDayString = weatherUtils.getWeekDay(timestamp, timeOffset);
-    
-    String truncatedWeekDay = (weekDayString.length() >= 10) ? weekDayString.substring(0, 10) : weekDayString;   
+
+    String truncatedWeekDay = (weekDayString.length() >= 10) ? weekDayString.substring(0, 10) : weekDayString;
     Text weekDay = new Text(truncatedWeekDay);
     weekDay.setFont(Font.font("Futura", FontWeight.BOLD, 14));
     return weekDay;
   }
-  
-    public Text getWeatherLocalTime() {
+
+  public Text getWeatherLocalTime() {
     int timestamp = (int) Instant.now().getEpochSecond();
     int timeOffset = weather.getTimeOffset();
     Text currentTime = new Text(weatherUtils.getLocalTime(timestamp, timeOffset).substring(11, 16));
@@ -65,7 +65,43 @@ public class WeatherDataController {
     temp.setFont(Font.font("Futura", FontWeight.BOLD, 60));
     return temp;
   }
-  
+
+  public ImageView getWeatherIcon() {
+    int id = weather.getId();
+    int sunrise = weather.getSunrise();
+    int sunset = weather.getSunset();
+    String path = weatherUtils.getIconString(id, (int) Instant.now().getEpochSecond(), sunrise, sunset, true);
+    ImageView weatherIcon = new ImageView(
+        new Image(getClass().getResourceAsStream(String.format("/weather-icons/%s.png", path))));
+    weatherIcon.setFitHeight(100);
+    weatherIcon.setPreserveRatio(true);
+    return weatherIcon;
+  }
+
+  public ImageView getHourlyWeatherIcon() {
+    int id = weather.getId();
+    int sunrise = weather.getSunrise();
+    int sunset = weather.getSunset();
+    int currentTime = weather.getTimestamp();
+    String path = weatherUtils.getIconString(id, currentTime, sunrise, sunset, true);
+    ImageView weatherIcon = new ImageView(
+        new Image(getClass().getResourceAsStream(String.format("/weather-icons/%s.png", path))));
+    weatherIcon.setFitHeight(60);
+    weatherIcon.setPreserveRatio(true);
+    return weatherIcon;
+  }
+
+  public ImageView getDailyWeatherIcon() {
+    int id = weather.getId();
+    int currentTime = weather.getTimestamp();
+    String path = weatherUtils.getIconString(id, currentTime, 0, 0, false);
+    ImageView weatherIcon = new ImageView(
+        new Image(getClass().getResourceAsStream(String.format("/weather-icons/%s.png", path))));
+    weatherIcon.setFitHeight(60);
+    weatherIcon.setPreserveRatio(true);
+    return weatherIcon;
+  }
+
   public Text getWeatherMinTemp() {
     int tempInt = (int) Math.round(weather.getMinTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
@@ -82,7 +118,7 @@ public class WeatherDataController {
     VBox.setMargin(temp, new Insets(10, 0, 0, 0));
     return temp;
   }
-  
+
   public Text getWeatherDescription() {
     String weatherDesc = weather.getWeatherDesc();
     Text desc = new Text(Character.toUpperCase(weatherDesc.charAt(0)) + weatherDesc.substring(1));
@@ -97,7 +133,7 @@ public class WeatherDataController {
     HBox.setMargin(precipitation, new Insets(0, 20, 0, 0));
     return precipitation;
   }
-  
+
   public Text getWeatherPrecipitationPercentage() {
     float precipitationPercentageFloat = weather.getPrecipitationPerc() * 100;
     Text precipitationPercentage = new Text(String.format(" %.0f%%", precipitationPercentageFloat));

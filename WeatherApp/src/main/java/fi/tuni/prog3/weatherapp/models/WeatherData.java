@@ -12,6 +12,7 @@ package fi.tuni.prog3.weatherapp.models;
 public class WeatherData {
     
     // Fields representing current weather conditions and forecasts
+    private int id;
     private int timestamp;
     private int timeOffset;
     private double temp;
@@ -38,10 +39,10 @@ public class WeatherData {
      * @param windDir           The wind direction in degrees.
      */
     
-    public WeatherData(int timestamp, float windSpeed, String icon, int windDir) {
+    public WeatherData(int timestamp, float windSpeed, int id, int windDir) {
         this.timestamp = timestamp;
         this.windSpeed = windSpeed;
-        this.icon = icon;
+        this.id = id;
         this.windDir = windDir;
     }
     
@@ -60,13 +61,14 @@ public class WeatherData {
      * @param lon               The longitude of the measured location.
      * @param weatherDesc       A brief description of the weather condition. 
      * @param sunrise           The sunrise time in Unix format (UTC).
-     * @param sunset           The sunset time in Unix format (UTC).
+     * @param sunset            The sunset time in Unix format (UTC).
+     * @param id                The weather id of current weather
      */
     
     public WeatherData(int timestamp, int timeOffset, double temp, double tempFeelsLike, int windDir,
                        float windSpeed, float precipitation, float lat, float lon,
-                       String weatherDesc, String icon, int sunrise, int sunset) {
-        this(timestamp, windSpeed, icon, windDir);
+                       String weatherDesc, String icon, int sunrise, int sunset, int id) {
+        this(timestamp, windSpeed, id, windDir);
         this.temp = temp;
         this.timeOffset = timeOffset;
         this.tempFeelsLike = tempFeelsLike;
@@ -86,11 +88,15 @@ public class WeatherData {
      * @param icon                  The icon code representing the weather condition.
      * @param precipitationPerc     The probability of precipitation.
      * @param windDir           The wind direction in degrees.
+     * @param id                The weather id of current weather
      */
-    public WeatherData(int timestamp, double temp, float windSpeed, String icon, float precipitationPerc, int windDir) {
-        this(timestamp, windSpeed, icon, windDir);
+    public WeatherData(int timestamp, int timeOffset, double temp, float windSpeed, String icon, float precipitationPerc, int windDir, int id, int sunrise, int sunset) {
+        this(timestamp, windSpeed, id, windDir);
         this.temp = temp;
+        this.timeOffset = timeOffset;
         this.precipitationPerc = precipitationPerc;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
     } 
     
     /**
@@ -103,9 +109,10 @@ public class WeatherData {
      * @param minTemp               The minimum temperature of the day in Kelvin.
      * @param maxTemp               The maximum temperature of the day in Kelvin.
      * @param windDir           The wind direction in degrees.
+     * @param id                The weather id of current weather
      */
-    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp, int windDir) {
-        this(timestamp, windSpeed, icon, windDir);
+    public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp, int windDir, int id) {
+        this(timestamp, windSpeed, id, windDir);
         this.precipitationPerc = precipitationPerc;
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -175,6 +182,10 @@ public class WeatherData {
     
     public int getSunset() {
         return sunset;
+    }
+
+    public int getId() {
+        return id;
     }
     
     // SETTERS for WeatherData Temperature Feilds

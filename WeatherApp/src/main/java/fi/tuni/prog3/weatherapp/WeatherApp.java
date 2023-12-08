@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class WeatherApp extends Application {
-
   private static final int WINDOW_HEIGHT = 720;
   private static final int WINDOW_WIDTH = 1280;
   LocationDataService locationDataService = new LocationDataService();
@@ -48,7 +47,6 @@ public class WeatherApp extends Application {
   LocationUtils locationUtils = new LocationUtils();
   Map<String, String> mapCountry = locationUtils.getMapFromFile("./json/countries.json");
   SimpleStringProperty unit = new SimpleStringProperty("initial");
-
   SimpleObjectProperty<LocationData> latestSearchLocation = new SimpleObjectProperty<>(
       locationDataService.getCurrentLocation());
   SimpleFloatProperty latitude = new SimpleFloatProperty(latestSearchLocation.get().getLat());
@@ -68,7 +66,7 @@ public class WeatherApp extends Application {
   SimpleStringProperty cityQueryValue = new SimpleStringProperty("");
   SimpleStringProperty countryQueryValue = new SimpleStringProperty("Choose a country (optional)");
   SimpleStringProperty stateQueryValue = new SimpleStringProperty("Choose a state (optional)");
-  SimpleStringProperty setFavorite = new SimpleStringProperty(
+  SimpleStringProperty setFavoriteLabel = new SimpleStringProperty(
       locationDataService.isFavoriteLocation(latestSearchLocation.get().getId())
           ? "Remove from favorites"
           : "Add to favorites");
@@ -82,7 +80,7 @@ public class WeatherApp extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     unitSystemButton.setText("Convert unit system");
-    setFavoriteButton.setText(setFavorite.get());
+    setFavoriteButton.setText(setFavoriteLabel.get());
 
     ScrollPane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
         currentWeatherData.get(),
@@ -106,20 +104,19 @@ public class WeatherApp extends Application {
       } catch (IOException e) {
         e.printStackTrace();
       }
-      System.out.println("Unit system changed to: " + unit.get());
     };
 
     EventHandler<ActionEvent> changeFavoriteStatus = event -> {
-      if (setFavorite.get().equals("Add to favorites")) {
+      if (setFavoriteLabel.get().equals("Add to favorites")) {
         locationDataService.addFavoriteLocation(latestSearchLocation.get());
-        setFavorite.set("Remove from favorites");
+        setFavoriteLabel.set("Remove from favorites");
       } else {
         locationDataService.removeFavoriteLocation(latestSearchLocation.get().getId());
-        setFavorite.set("Add to favorites");
+        setFavoriteLabel.set("Add to favorites");
       }
       favorites
           .set(FXCollections.observableList(locationDataService.getAllFavoriteLocations()));
-      setFavoriteButton.setText(setFavorite.get());
+      setFavoriteButton.setText(setFavoriteLabel.get());
     };
 
     unitSystemButton.setOnAction(unitSystemConverter);
@@ -150,6 +147,10 @@ public class WeatherApp extends Application {
                 longitude.get())));
         history
             .set(FXCollections.observableList(locationDataService.getHistory()));
+        setFavoriteLabel.set(locationDataService.isFavoriteLocation(latestSearchLocation.get().getId())
+            ? "Remove from favorites"
+            : "Add to favorites");
+        setFavoriteButton.setText(setFavoriteLabel.get());
 
         ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT,
             latestSearchLocation.get(),
@@ -171,7 +172,7 @@ public class WeatherApp extends Application {
     searchBox.setPadding(new Insets(10));
     labelSearch.setFont(Font.font("Futura", FontWeight.BOLD, 20));
     searchBox.getChildren().add(labelSearch);
-    searchBox.setPrefWidth(1080 / 2);
+    searchBox.setPrefWidth(WINDOW_WIDTH / 2);
     searchBox.setPrefHeight(720 / 2);
 
     Text labelCity = new Text("City");
@@ -182,7 +183,7 @@ public class WeatherApp extends Application {
     HBox cityQuery = new HBox(labelCity, spacer1, cityTextField);
     cityQuery.setSpacing(10);
     cityQuery.setAlignment(Pos.CENTER);
-    cityQuery.setPrefWidth(1080 / 2);
+    cityQuery.setPrefWidth(WINDOW_WIDTH / 2);
 
     Text labelCountry = new Text("Country");
     Region spacer2 = new Region();
@@ -197,7 +198,7 @@ public class WeatherApp extends Application {
     HBox countryQuery = new HBox(labelCountry, spacer2, comboBoxCountry);
     countryQuery.setSpacing(10);
     countryQuery.setAlignment(Pos.CENTER);
-    countryQuery.setPrefWidth(1080 / 2);
+    countryQuery.setPrefWidth(WINDOW_WIDTH / 2);
 
     Text labelState = new Text("State");
     Region spacer3 = new Region();
@@ -213,7 +214,7 @@ public class WeatherApp extends Application {
     HBox stateQuery = new HBox(labelState, spacer3, comboBoxState);
     stateQuery.setSpacing(10);
     stateQuery.setAlignment(Pos.CENTER);
-    stateQuery.setPrefWidth(1080 / 2);
+    stateQuery.setPrefWidth(WINDOW_WIDTH / 2);
     comboBoxState.setOnAction(event -> {
       stateQueryValue.set(comboBoxState.getValue());
     });
@@ -229,13 +230,12 @@ public class WeatherApp extends Application {
     Button searchButton = new Button("Search");
     HBox searchButtonBox = new HBox(searchButton);
     searchButtonBox.setAlignment(Pos.CENTER_RIGHT);
-    searchButtonBox.setPrefWidth(1080 / 2);
+    searchButtonBox.setPrefWidth(WINDOW_WIDTH / 2);
 
     searchButton.setOnAction(event -> {
       cityQueryValue.set(cityTextField.getText());
       try {
         if (countryQueryValue.get().equals("Choose a country (optional)")) {
-          System.out.println("run here 1");
           searchResults
               .set(FXCollections.observableList(locationDataService.queryLocation(cityQueryValue.get())));
 
@@ -246,7 +246,6 @@ public class WeatherApp extends Application {
                   .observableList(locationDataService.queryLocation(cityQueryValue.get(),
                       mapCountry.get(countryQueryValue.get()))));
         } else {
-          System.out.println("run here 3");
           searchResults
               .set(FXCollections
                   .observableList(
@@ -298,6 +297,7 @@ public class WeatherApp extends Application {
   }
 
   public static void main(String[] args) {
+    System.out.println("Welcome to the Weather Application!");
     launch();
   }
 }

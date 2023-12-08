@@ -58,10 +58,7 @@ public class DailyWeatherBox {
       WeatherDataController weatherDataController = new WeatherDataController(dailyWeather, unit);
       Text forecastDay = weatherDataController.getWeatherWeekDay();
 
-      ImageView dailyWeatherIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/weather-91.png")));
-      dailyWeatherIcon.setFitHeight(40);
-      dailyWeatherIcon.setPreserveRatio(true);
+      ImageView dailyWeatherIcon = weatherDataController.getDailyWeatherIcon();
 
       HBox dailyPos = new HBox();
       dailyPos.setPrefWidth(width / 8);

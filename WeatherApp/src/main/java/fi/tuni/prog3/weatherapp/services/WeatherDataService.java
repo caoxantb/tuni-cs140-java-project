@@ -58,9 +58,10 @@ public class WeatherDataService {
                 String weatherDesc = json.getJSONArray("weather").getJSONObject(0).getString("description");
                 int sunrise = json.getJSONObject("sys").getInt("sunrise");
                 int sunset = json.getJSONObject("sys").getInt("sunset");
+                int id = json.getJSONArray("weather").getJSONObject(0).getInt("id");
                 
                 WeatherData weatherData = new WeatherData(timestamp, timeOffset, temp, tempFeelsLike, windDir,
-                        windSpeed, precipitation, latValue, lonValue, weatherDesc, icon, sunrise, sunset);
+                        windSpeed, precipitation, latValue, lonValue, weatherDesc, icon, sunrise, sunset, id);
 
                 return weatherData;
                 
@@ -96,13 +97,18 @@ public class WeatherDataService {
                     JSONObject forecastObj = forecastList.getJSONObject(i);
 
                     int timestamp = forecastObj.optInt("dt");
+                    int timeOffset = json.getJSONObject("city").optInt("timezone");
+                    int sunrise = json.getJSONObject("city").optInt("sunrise");
+                    int sunset = json.getJSONObject("city").optInt("sunset");
+
                     float windSpeed = forecastObj.getJSONObject("wind").optFloat("speed");
                     String icon = forecastObj.getJSONArray("weather").getJSONObject(0).optString("icon");
                     double temp = forecastObj.getJSONObject("main").optDouble("temp");
                     float precipitationPerc = forecastObj.optFloat("pop");
                     int windDir = forecastObj.getJSONObject("wind").optInt("deg");
+                    int id = forecastObj.getJSONArray("weather").getJSONObject(0).optInt("id");
                     
-                    WeatherData weatherData = new WeatherData(timestamp, temp, windSpeed, icon, precipitationPerc, windDir);
+                    WeatherData weatherData = new WeatherData(timestamp, timeOffset, temp, windSpeed, icon, precipitationPerc, windDir, id, sunrise, sunset);
                     _3HourlyWeatherForecast.add(weatherData);
                 }                      
             }       
@@ -143,8 +149,10 @@ public class WeatherDataService {
                     double minTemp = dailyForecast.getJSONObject("temp").getDouble("min");
                     double maxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
                     int windDir = dailyForecast.optInt("wind_deg");
+                                        int id = dailyForecast.getJSONArray("weather").getJSONObject(0).getInt("id");
+
                     
-                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp, windDir);
+                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp, windDir, id);
                     weeklyWeatherForecast.add(weatherData);
                 }                        
             }       
@@ -160,15 +168,11 @@ public class WeatherDataService {
     private StringBuilder fetchDataRequest(String apiUrl) throws Exception{
         
         StringBuilder response = new StringBuilder();
-        System.out.println("Api URL: " + apiUrl); //DEBUGGING       
-        
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         
         int responseCode = connection.getResponseCode();
-        System.out.println("Response Code: " + responseCode); //DEBUGGING
-        
         if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
@@ -177,8 +181,6 @@ public class WeatherDataService {
                     response.append(line);
                 }
                 reader.close();
-
-                System.out.println("API Response: " + response); //DEBUGGING 
         }
         
         return response;

@@ -66,11 +66,8 @@ public class HourlyWeatherBox {
       Text forecastHour = new Text(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
       forecastHour.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
-      ImageView hourlyWeatherIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/weather-91.png")));
-      hourlyWeatherIcon.setFitHeight(40);
-      hourlyWeatherIcon.setPreserveRatio(true);
-
+      ImageView hourlyWeatherIcon = weatherDataController.getHourlyWeatherIcon();
+      
       HBox hourlyPos = new HBox();
       hourlyPos.setPrefWidth(width / 8);
       hourlyPos.setAlignment(Pos.CENTER);

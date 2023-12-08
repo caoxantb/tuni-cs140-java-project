@@ -37,10 +37,7 @@ public class CurrentWeatherBox {
     Text cityName = locationDataController.getSearchedLocationCity();
     ImageView countryFlag = locationDataController.getSearchedLocationFlag();
     Text stateAndCountryName = locationDataController.getSearchedLocationCountryAndState();
-    ImageView weatherIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/weather-91.png")));
-    weatherIcon.setFitHeight(100);
-    weatherIcon.setPreserveRatio(true);
+    ImageView weatherIcon = weatherDataController.getWeatherIcon();
     Text temp = weatherDataController.getWeatherTemp();
     Text desc = weatherDataController.getWeatherDescription();
     Text precipitation = weatherDataController.getWeatherPrecipitation();
