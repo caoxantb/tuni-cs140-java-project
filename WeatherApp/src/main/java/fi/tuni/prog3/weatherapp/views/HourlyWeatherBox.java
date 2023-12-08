@@ -68,23 +68,23 @@ public class HourlyWeatherBox {
 
       ImageView hourlyWeatherIcon = weatherDataController.getHourlyWeatherIcon();
       
-      HBox hourlyPos = new HBox();
-      hourlyPos.setPrefWidth(width / 8);
-      hourlyPos.setAlignment(Pos.CENTER);
+      HBox hourlyPop = new HBox();
+      hourlyPop.setPrefWidth(width / 8);
+      hourlyPop.setAlignment(Pos.CENTER);
 
-      ImageView hourlyPosIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/pos.png")));
-      hourlyPosIcon.setFitHeight(14);
-      hourlyPosIcon.setPreserveRatio(true);
+      ImageView hourlyPopIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/label-icons/pos.png")));
+      hourlyPopIcon.setFitHeight(14);
+      hourlyPopIcon.setPreserveRatio(true);
 
-      Text hourlyPosText = weatherDataController.getWeatherPrecipitationPercentage();
+      Text hourlyPopText = weatherDataController.getWeatherPrecipitationPercentage();
 
       HBox hourlyWind = new HBox();
       hourlyWind.setPrefWidth(width / 8);
       hourlyWind.setAlignment(Pos.CENTER);
 
       ImageView hourlyWindIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/wind.png")));
+          new Image(getClass().getResourceAsStream("/label-icons/wind.png")));
       hourlyWindIcon.setFitHeight(14);
       hourlyWindIcon.setPreserveRatio(true);
 
@@ -101,9 +101,9 @@ public class HourlyWeatherBox {
       hourlyTempSpan.setArcHeight(12);
       VBox.setMargin(hourlyTempSpan, new Insets(0, 6, 0, 0));
 
-      hourlyPos.getChildren().addAll(hourlyPosIcon, hourlyPosText);
+      hourlyPop.getChildren().addAll(hourlyPopIcon, hourlyPopText);
       hourlyWind.getChildren().addAll(hourlyWindIcon, hourlyWindText, hourlyWindDirectionIcon);
-      hourlyWeatherStack.getChildren().addAll(forecastHour, hourlyWeatherIcon, hourlyPos, hourlyWind, hourlyTemp,
+      hourlyWeatherStack.getChildren().addAll(forecastHour, hourlyWeatherIcon, hourlyPop, hourlyWind, hourlyTemp,
           hourlyTempSpan);
       hourlyWeatherStackContainer.getChildren().add(hourlyWeatherStack);
     }

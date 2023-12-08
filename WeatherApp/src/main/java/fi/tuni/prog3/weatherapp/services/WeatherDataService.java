@@ -52,7 +52,7 @@ public class WeatherDataService {
                 int timeOffset = json.getInt("timezone");
                 double tempFeelsLike = json.getJSONObject("main").getDouble("feels_like");
                 int windDir = json.getJSONObject("wind").getInt("deg");
-                float precipitation = json.optJSONObject("rain") != null ? json.getJSONObject("rain").optInt("1h") : 0;
+                float precipitation = json.optJSONObject("rain") != null ? json.getJSONObject("rain").optFloat("1h") : 0;
                 float latValue = (float) json.getJSONObject("coord").getDouble("lat");
                 float lonValue = (float) json.getJSONObject("coord").getDouble("lon");
                 String weatherDesc = json.getJSONArray("weather").getJSONObject(0).getString("description");

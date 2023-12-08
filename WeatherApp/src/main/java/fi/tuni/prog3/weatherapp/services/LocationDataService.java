@@ -227,9 +227,6 @@ public class LocationDataService implements iReadAndWriteToFile {
 
     updatedHistoryLocations.add(newlySearchElement);
 
-    if (updatedHistoryLocations.size() > 20) {
-      updatedHistoryLocations.remove(0);
-    }
     writeToFile(HISTORY_PATH, updatedHistoryLocations);
   }
 

@@ -161,7 +161,7 @@ public class WeatherDataController {
   public ImageView getWeatherWindDir() {
     int windDir = weather.getWindDir();
     ImageView windDirectionIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/arrow-thick-top.png")));
+        new Image(getClass().getResourceAsStream("/label-icons/arrow-thick-top.png")));
     windDirectionIcon.setFitHeight(14);
     windDirectionIcon.setPreserveRatio(true);
     Rotate rotate = new Rotate(windDir, 7, 7);

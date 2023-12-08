@@ -6,7 +6,10 @@ import java.util.Collections;
 import fi.tuni.prog3.weatherapp.models.LocationData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -39,9 +42,9 @@ public class SearchContent {
     ArrayList<LocationData> reversedHistory = new ArrayList<>(history);
     Collections.reverse(reversedHistory);
 
-    getPanel(searchResultsBox, searchResults, "top right", "Search Results");
-    getPanel(favoritesBox, favorites, "bottom left", "Favorites");
-    getPanel(historyBox, reversedHistory, "top left", "History");
+    getPanel(searchResultsBox, searchResults, "top right", "Search Results", "search");
+    getPanel(favoritesBox, favorites, "bottom left", "Favorites", "favorite");
+    getPanel(historyBox, reversedHistory, "top left", "History", "history");
 
     VBox firstPanel = new VBox(searchBox, searchResultsBox);
 
@@ -62,7 +65,7 @@ public class SearchContent {
     return nonScrollPane;
   }
 
-  private void getPanel(VBox box, ArrayList<LocationData> dataList, String direction, String labelName) {
+  private void getPanel(VBox box, ArrayList<LocationData> dataList, String direction, String labelName, String icon) {
     box.setStyle(String.format("-fx-background-color: linear-gradient(to %s, rgba(196, 196, 196, 0.7), transparent);",
         direction));
     Text label = new Text(labelName);
@@ -75,14 +78,21 @@ public class SearchContent {
     for (LocationData data : dataList) {
       String text = data.getState().equals("") ? String.format("%s, %s", data.getCity(), data.getCountry())
           : String.format("%s, %s, %s", data.getCity(), data.getState(), data.getCountry());
-      HBox searchTabBox = new HBox();
+      HBox searchTabBox = new HBox(5);
       searchTabBox.setPrefWidth(width);
       searchTabBox.getProperties().put("location", data);
       searchTabBox.setOnMouseClicked(searchEvent);
+      searchTabBox.setAlignment(Pos.CENTER_LEFT);
+
+      ImageView boxIcon = new ImageView(
+          new Image(getClass().getResourceAsStream(String.format("/label-icons/%s.png", icon))));
+      boxIcon.setFitHeight(14);
+      boxIcon.setPreserveRatio(true);
+
       if (searchTabBox.getChildren().size() == 0) {
         Text searchTabText = new Text(text);
         searchTabText.setFont(Font.font("Futura", FontWeight.NORMAL, 14));
-        searchTabBox.getChildren().add(searchTabText);
+        searchTabBox.getChildren().addAll(boxIcon, searchTabText);
       }
       box.getChildren().add(searchTabBox);
     }

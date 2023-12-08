@@ -61,7 +61,7 @@ public class CurrentWeatherBox {
     rowCity.setSpacing(5);
 
     ImageView locationIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/location.png")));
+        new Image(getClass().getResourceAsStream("/label-icons/location.png")));
     locationIcon.setFitHeight(32);
     locationIcon.setPreserveRatio(true);
 
@@ -80,12 +80,12 @@ public class CurrentWeatherBox {
     weatherDetail.setAlignment(Pos.CENTER);
 
     ImageView precipitationIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/precipitation.png")));
+        new Image(getClass().getResourceAsStream("/label-icons/precipitation.png")));
     precipitationIcon.setFitHeight(14);
     precipitationIcon.setPreserveRatio(true);
 
     ImageView windIcon = new ImageView(
-        new Image(getClass().getResourceAsStream("/wind.png")));
+        new Image(getClass().getResourceAsStream("/label-icons/wind.png")));
     windIcon.setFitHeight(14);
     windIcon.setPreserveRatio(true);
 

@@ -60,23 +60,23 @@ public class DailyWeatherBox {
 
       ImageView dailyWeatherIcon = weatherDataController.getDailyWeatherIcon();
 
-      HBox dailyPos = new HBox();
-      dailyPos.setPrefWidth(width / 8);
-      dailyPos.setAlignment(Pos.CENTER);
+      HBox dailyPop = new HBox();
+      dailyPop.setPrefWidth(width / 8);
+      dailyPop.setAlignment(Pos.CENTER);
 
-      ImageView dailyPosIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/pos.png")));
-      dailyPosIcon.setFitHeight(14);
-      dailyPosIcon.setPreserveRatio(true);
+      ImageView dailyPopIcon = new ImageView(
+          new Image(getClass().getResourceAsStream("/label-icons/pos.png")));
+      dailyPopIcon.setFitHeight(14);
+      dailyPopIcon.setPreserveRatio(true);
 
-      Text dailyPosText = weatherDataController.getWeatherPrecipitationPercentage();
+      Text dailyPopText = weatherDataController.getWeatherPrecipitationPercentage();
 
       HBox dailyWind = new HBox();
       dailyWind.setPrefWidth(width / 8);
       dailyWind.setAlignment(Pos.CENTER);
 
       ImageView dailyWindIcon = new ImageView(
-          new Image(getClass().getResourceAsStream("/wind.png")));
+          new Image(getClass().getResourceAsStream("/label-icons/wind.png")));
       dailyWindIcon.setFitHeight(14);
       dailyWindIcon.setPreserveRatio(true);
 
@@ -95,9 +95,9 @@ public class DailyWeatherBox {
       Text dailyTempMin = weatherDataController.getWeatherMinTemp();
       dailyTempMin.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
-      dailyPos.getChildren().addAll(dailyPosIcon, dailyPosText);
+      dailyPop.getChildren().addAll(dailyPopIcon, dailyPopText);
       dailyWind.getChildren().addAll(dailyWindIcon, dailyWindText, dailyWindDirectionIcon);
-      dailyWeatherStack.getChildren().addAll(forecastDay, dailyWeatherIcon, dailyPos, dailyWind, dailyTempMax,
+      dailyWeatherStack.getChildren().addAll(forecastDay, dailyWeatherIcon, dailyPop, dailyWind, dailyTempMax,
           dailyTempSpan, dailyTempMin);
       dailyWeatherStackContainer.getChildren().addAll(dailyWeatherStack);
 
