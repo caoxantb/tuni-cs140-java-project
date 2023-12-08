@@ -1,8 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package fi.tuni.prog3.weatherapp.services;
+
+/**
+ * Service class responsible for handling location data, querying APIs, and managing file operations.
+ * Implements functionality to interact with location information, favorites, history, and file I/O.
+ * 
+ * @author Xuan-An Cao
+ */
 
 import fi.tuni.prog3.weatherapp.models.LocationData;
 import fi.tuni.prog3.weatherapp.interfaces.iReadAndWriteToFile;
@@ -36,10 +40,17 @@ public class LocationDataService implements iReadAndWriteToFile {
   private static final String FAVORITE_PATH = "./json/favorites.json";
   private static final String HISTORY_PATH = "./json/history.json";
 
+  // Constants and fields...
+
+    /**
+     * Constructs a LocationDataService object.
+     */
   public LocationDataService() {
     //
   }
 
+  // Methods for API calls, handling responses, file operations, and data manipulation
+  
   private String getLocationRequest(String apiUrl) throws IOException {
     URL url = new URL(apiUrl);
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -94,7 +105,15 @@ public class LocationDataService implements iReadAndWriteToFile {
 
     return filteredLocations;
   }
-
+  
+  // Methods for reading from and writing to files
+  
+  /**
+     * Reads data from a JSON file located at the given file path.
+     *
+     * @param filePath The path of the JSON file to be read.
+     * @return The JSON data read from the file as a JsonArray.
+     */
   public JsonArray readFromFile(String filePath) {
     try (FileReader fileReader = new FileReader(filePath)) {
       JsonElement jsonElement = JsonParser.parseReader(fileReader);
@@ -110,6 +129,12 @@ public class LocationDataService implements iReadAndWriteToFile {
     }
   }
 
+  /**
+     * Writes the provided JSON data to a file at the specified file path.
+     *
+     * @param filePath The path where the JSON data will be written.
+     * @param data     The JSON data to be written to the file as a JsonArray.
+     */
   public void writeToFile(String filePath, JsonArray data) {
     // Create a Gson object
     Gson gson = new Gson();
@@ -121,6 +146,13 @@ public class LocationDataService implements iReadAndWriteToFile {
     }
   }
 
+   /**
+     * Queries the location based on the provided city.
+     * 
+     * @param city The name of the city to query.
+     * @return An ArrayList of LocationData objects based on the city query.
+     * @throws IOException If an error occurs during the API request.
+     */
   public ArrayList<LocationData> queryLocation(String city) throws IOException {
     String locationApiUrl = String.format(
         "%s%s%s%s", LOCATION_API_PREFIX, city, LOCATION_API_SUFFIX, API_KEY);
@@ -129,6 +161,14 @@ public class LocationDataService implements iReadAndWriteToFile {
     return searchedLocations;
   }
 
+  /**
+     * Queries the location based on the provided city and country.
+     * 
+     * @param city    The name of the city to query.
+     * @param country The name of the country associated with the city.
+     * @return An ArrayList of LocationData objects based on the city and country query.
+     * @throws IOException If an error occurs during the API request.
+     */
   public ArrayList<LocationData> queryLocation(String city, String country) throws IOException {
     String locationApiUrl = String.format(
         "%s%s,%s%s%s", LOCATION_API_PREFIX, city, country, LOCATION_API_SUFFIX, API_KEY);
@@ -137,6 +177,15 @@ public class LocationDataService implements iReadAndWriteToFile {
     return searchedLocations;
   }
 
+   /**
+     * Queries the location based on the provided city, country, and state.
+     * 
+     * @param city    The name of the city to query.
+     * @param country The name of the country associated with the city.
+     * @param state   The name of the state or region associated with the city.
+     * @return An ArrayList of LocationData objects based on the city, country, and state query.
+     * @throws IOException If an error occurs during the API request.
+     */
   public ArrayList<LocationData> queryLocation(String city, String country, String state) throws IOException {
     String locationApiUrl = String.format(
         "%s%s,%s,%s%s%s", LOCATION_API_PREFIX, city, country, state, LOCATION_API_SUFFIX, API_KEY);
@@ -145,6 +194,13 @@ public class LocationDataService implements iReadAndWriteToFile {
     return searchedLocations;
   }
 
+   // Methods for managing favorite locations
+  
+  /**
+     * Retrieves all the favorite locations stored in the file.
+     *
+     * @return An ArrayList of LocationData containing all the favorite locations.
+     */
   public ArrayList<LocationData> getAllFavoriteLocations() {
     Gson gson = new Gson();
 
@@ -159,6 +215,11 @@ public class LocationDataService implements iReadAndWriteToFile {
     return favoriteLocations;
   }
 
+  /**
+     * Adds a new location to the favorite locations.
+     *
+     * @param newLocation The LocationData object to be added as a favorite.
+     */
   public void addFavoriteLocation(LocationData newLocation) {
     Gson gson = new Gson();
     File file = new File(FAVORITE_PATH);
@@ -175,6 +236,11 @@ public class LocationDataService implements iReadAndWriteToFile {
     writeToFile(FAVORITE_PATH, favoriteLocations);
   }
 
+  /**
+     * Removes a favorite location by ID.
+     *
+     * @param id The ID of the location to be removed.
+     */
   public void removeFavoriteLocation(String id) {
     JsonArray favoriteLocations = readFromFile(FAVORITE_PATH);
     JsonArray updatedFavoriteLocations = new JsonArray();
@@ -188,6 +254,12 @@ public class LocationDataService implements iReadAndWriteToFile {
     writeToFile(FAVORITE_PATH, updatedFavoriteLocations);
   }
 
+  /**
+     * Checks if a location with a given ID is marked as a favorite.
+     *
+     * @param id The ID of the location to check for as a favorite.
+     * @return True if the location is marked as a favorite, otherwise false.
+     */
   public boolean isFavoriteLocation(String id) {
     JsonArray favoriteLocations = readFromFile(FAVORITE_PATH);
     AtomicBoolean isFavorite = new AtomicBoolean(false);
@@ -203,6 +275,13 @@ public class LocationDataService implements iReadAndWriteToFile {
     return isFavorite.get();
   }
 
+  // Methods for managing history
+  
+  /**
+     * Adds a new location to the search history.
+     *
+     * @param newLocation The LocationData object to be added to the history.
+     */
   public void addToHistory(LocationData newLocation) {
     Gson gson = new Gson();
     File file = new File(HISTORY_PATH);
@@ -230,6 +309,11 @@ public class LocationDataService implements iReadAndWriteToFile {
     writeToFile(HISTORY_PATH, updatedHistoryLocations);
   }
 
+  /**
+     * Retrieves the search history containing previously searched locations.
+     *
+     * @return An ArrayList of LocationData containing the search history.
+     */
   public ArrayList<LocationData> getHistory() {
     Gson gson = new Gson();
     JsonArray historyAsJsonArray = readFromFile(HISTORY_PATH);
@@ -243,6 +327,13 @@ public class LocationDataService implements iReadAndWriteToFile {
     return historyLocations;
   }
 
+  //Utility Methods
+  
+   /**
+     * Retrieves the latest searched location from the history.
+     *
+     * @return The LocationData of the latest searched location.
+     */
   public LocationData getCurrentLocation() {
     Gson gson = new Gson();
     JsonArray history = readFromFile(HISTORY_PATH);

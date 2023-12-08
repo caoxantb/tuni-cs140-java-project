@@ -16,7 +16,10 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
 /**
- *
+ * Controller class responsible for managing and handling WeatherData in the UI.
+ * Contains methods to retrieve specific details of weather information for display purposes.
+ * Handles conversion between different unit systems for temperature measurement (imperial/metric).
+ * 
  * @author Ayman Khan
  */
 public class WeatherDataController {
@@ -24,11 +27,22 @@ public class WeatherDataController {
   String unit;
   WeatherUtils weatherUtils = new WeatherUtils();
 
+  /**
+     * Constructs a WeatherDataController object with the specified WeatherData and unit.
+     * 
+     * @param weather The WeatherData object to be managed by this controller.
+     * @param unit    The unit system for temperature measurement (imperial/metric).
+     */
   public WeatherDataController(WeatherData weather, String unit) {
     this.weather = weatherUtils.convertToUnitSystem(weather, unit);
     this.unit = unit;
   }
 
+  /**
+     * Retrieves the local day (day of the week and date) of the weather.
+     * 
+     * @return A Text object representing the local day.
+     */
   public Text getWeatherLocalDay() {
     int timestamp = (int) Instant.now().getEpochSecond();
     int timeOffset = weather.getTimeOffset();
@@ -39,6 +53,11 @@ public class WeatherDataController {
     return currentDay;
   }
 
+  /**
+     * Retrieves the day of the week of the weather.
+     * 
+     * @return A Text object representing the day of the week.
+     */
   public Text getWeatherWeekDay() {
     int timestamp = weather.getTimestamp();
     int timeOffset = weather.getTimeOffset();
@@ -50,6 +69,11 @@ public class WeatherDataController {
     return weekDay;
   }
 
+  /**
+     * Retrieves the local time of the weather.
+     * 
+     * @return A Text object representing the local time.
+     */
   public Text getWeatherLocalTime() {
     int timestamp = (int) Instant.now().getEpochSecond();
     int timeOffset = weather.getTimeOffset();
@@ -58,6 +82,11 @@ public class WeatherDataController {
     return currentTime;
   }
 
+  /**
+     * Retrieves the temperature of the weather.
+     * 
+     * @return A Text object representing the temperature.
+     */
   public Text getWeatherTemp() {
     int tempInt = (int) Math.round(weather.getTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
@@ -66,6 +95,11 @@ public class WeatherDataController {
     return temp;
   }
 
+  /**
+     * Retrieves the weather icon representing the current weather conditions.
+     * 
+     * @return An ImageView representing the weather icon.
+     */
   public ImageView getWeatherIcon() {
     int id = weather.getId();
     int sunrise = weather.getSunrise();
@@ -78,6 +112,11 @@ public class WeatherDataController {
     return weatherIcon;
   }
 
+  /**
+     * Retrieves the hourly weather icon representing the weather conditions for the hour.
+     * 
+     * @return An ImageView representing the hourly weather icon.
+     */
   public ImageView getHourlyWeatherIcon() {
     int id = weather.getId();
     int sunrise = weather.getSunrise();
@@ -91,6 +130,11 @@ public class WeatherDataController {
     return weatherIcon;
   }
 
+  /**
+     * Retrieves the daily weather icon representing the weather conditions for the day.
+     * 
+     * @return An ImageView representing the daily weather icon.
+     */
   public ImageView getDailyWeatherIcon() {
     int id = weather.getId();
     int currentTime = weather.getTimestamp();
@@ -102,6 +146,11 @@ public class WeatherDataController {
     return weatherIcon;
   }
 
+   /**
+     * Retrieves the minimum temperature of the weather.
+     * 
+     * @return A Text object representing the minimum temperature.
+     */
   public Text getWeatherMinTemp() {
     int tempInt = (int) Math.round(weather.getMinTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
@@ -110,6 +159,11 @@ public class WeatherDataController {
     return temp;
   }
 
+  /**
+     * Retrieves the maximum temperature of the weather.
+     * 
+     * @return A Text object representing the maximum temperature.
+     */
   public Text getWeatherMaxTemp() {
     int tempInt = (int) Math.round(weather.getMaxTemp());
     String tempUnit = unit == "imperial" ? "F" : "C";
@@ -119,6 +173,11 @@ public class WeatherDataController {
     return temp;
   }
 
+  /**
+     * Retrieves the weather description providing information about current conditions.
+     * 
+     * @return A Text object representing the weather description.
+     */
   public Text getWeatherDescription() {
     String weatherDesc = weather.getWeatherDesc();
     Text desc = new Text(Character.toUpperCase(weatherDesc.charAt(0)) + weatherDesc.substring(1));
@@ -126,6 +185,11 @@ public class WeatherDataController {
     return desc;
   }
 
+   /**
+     * Retrieves the precipitation amount in the weather.
+     * 
+     * @return A Text object representing the precipitation.
+     */
   public Text getWeatherPrecipitation() {
     float precipitationFloat = weather.getPrecipitation();
     Text precipitation = new Text(String.format(" %.1f mm/h", precipitationFloat));
@@ -134,6 +198,11 @@ public class WeatherDataController {
     return precipitation;
   }
 
+  /**
+     * Retrieves the percentage chance of precipitation in the weather.
+     * 
+     * @return A Text object representing the precipitation percentage.
+     */
   public Text getWeatherPrecipitationPercentage() {
     float precipitationPercentageFloat = weather.getPrecipitationPerc() * 100;
     Text precipitationPercentage = new Text(String.format(" %.0f%%", precipitationPercentageFloat));
@@ -141,6 +210,11 @@ public class WeatherDataController {
     return precipitationPercentage;
   }
 
+  /**
+     * Retrieves the 'feels like' temperature of the weather.
+     * 
+     * @return A Text object representing the 'feels like' temperature.
+     */
   public Text getWeatherTempFeelsLike() {
     int tempFeelsLikeInt = (int) Math.round(weather.getTempFeelsLike());
     String tempUnit = unit == "imperial" ? "F" : "C";
@@ -150,6 +224,11 @@ public class WeatherDataController {
     return tempFeelsLike;
   }
 
+  /**
+     * Retrieves the wind speed in the weather.
+     * 
+     * @return A Text object representing the wind speed.
+     */
   public Text getWeatherWindSpeed() {
     float windSpeed = weather.getWindSpeed();
     Text wind = new Text(String.format(" %.1f km/h", windSpeed));
@@ -158,6 +237,11 @@ public class WeatherDataController {
     return wind;
   }
 
+  /**
+     * Retrieves the wind direction icon representing the direction of the wind.
+     * 
+     * @return An ImageView representing the wind direction icon.
+     */
   public ImageView getWeatherWindDir() {
     int windDir = weather.getWindDir();
     ImageView windDirectionIcon = new ImageView(
