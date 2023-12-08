@@ -13,11 +13,27 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * The {@code LocationUtils} class provides utility methods for handling location-related operations,
+ * such as parsing keys, key-value pairs from JSON files, and retrieving state codes.
+ * It offers functionalities to retrieve keys and key-value pairs from JSON files,
+ * as well as obtaining an array of state codes.
+ */
 public class LocationUtils {
+    
+  /**
+   * Default constructor for LocationUtils.
+   */  
   public LocationUtils() {
     //
   }
 
+  /**
+   * Retrieves keys from a JSON file and returns them as an array of strings.
+   *
+   * @param filePath The path of the JSON file.
+   * @return An array of strings containing keys from the JSON file.
+   */
   public String[] getKeysFromFile(String filePath) {
     List<String> keysList = new ArrayList<>();
 
@@ -52,6 +68,12 @@ public class LocationUtils {
     return keysList.toArray(new String[0]);
   }
 
+  /**
+   * Retrieves key-value pairs from a JSON file and returns them as a map.
+   *
+   * @param filePath The path of the JSON file.
+   * @return A map containing key-value pairs from the JSON file.
+   */
   public Map<String, String> getMapFromFile(String filePath) {
     Map<String, String> keyValueMap = new HashMap<>();
 
@@ -89,6 +111,11 @@ public class LocationUtils {
     return keyValueMap;
   }
 
+  /**
+   * Returns an array of state codes.
+   *
+   * @return An array of strings containing state codes.
+   */
   public String[] getStatesCode() {
     String[] stateCodes = {
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",

@@ -17,12 +17,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The {@code SearchContent} class generates the search content view for the weather application.
+ */
 public class SearchContent {
   ArrayList<LocationData> searchResults, history, favorites;
   int width;
   EventHandler<MouseEvent> searchEvent;
   VBox searchBox;
 
+   /**
+   * Constructs a SearchContent object with specified parameters.
+   *
+   * @param width       The width of the search content.
+   * @param searchBox   The VBox containing search components.
+   * @param searchResults The list of search results.
+   * @param history     The list of search history.
+   * @param favorites   The list of favorite locations.
+   * @param searchEvent The event handler for search actions.
+   */
   public SearchContent(int width, VBox searchBox, ArrayList<LocationData> searchResults,
       ArrayList<LocationData> history, ArrayList<LocationData> favorites,
       EventHandler<MouseEvent> searchEvent) {
@@ -34,6 +47,11 @@ public class SearchContent {
     this.searchBox = searchBox;
   }
 
+  /**
+   * Retrieves a ScrollPane containing the search content view.
+   *
+   * @return A ScrollPane containing the search content view.
+   */
   public ScrollPane getContent() {
     VBox searchResultsBox = new VBox(10);
     VBox historyBox = new VBox(10);

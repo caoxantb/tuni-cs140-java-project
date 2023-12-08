@@ -20,12 +20,26 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The {@code HourlyWeatherBox} class generates a graphical representation
+ * of the hourly weather forecast.
+ */
 public class HourlyWeatherBox {
   int width, height;
   LocationData location;
   ArrayList<WeatherData> hourlyWeatherData;
   String unit;
 
+  /**
+   * Constructs an HourlyWeatherBox object with specified dimensions, location data,
+   * hourly weather data, and unit system.
+   *
+   * @param width             The width of the weather box.
+   * @param height            The height of the weather box.
+   * @param location          The location data.
+   * @param hourlyWeatherData The hourly weather data.
+   * @param unit              The unit system for temperature.
+   */
   public HourlyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> hourlyWeatherData,
       String unit) {
     this.width = width;
@@ -35,6 +49,11 @@ public class HourlyWeatherBox {
     this.unit = unit;
   }
 
+  /**
+   * Retrieves an HBox containing the graphical representation of the hourly weather forecast.
+   *
+   * @return An HBox containing the hourly weather forecast representation.
+   */
   public HBox getContent() {
     HBox hourlyWeatherBox = new HBox();
     hourlyWeatherBox.setPrefWidth(width);

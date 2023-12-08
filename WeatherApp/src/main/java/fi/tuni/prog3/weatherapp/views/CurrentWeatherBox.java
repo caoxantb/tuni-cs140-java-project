@@ -14,12 +14,26 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/**
+ * The {@code CurrentWeatherBox} class generates a graphical representation
+ * of the current weather conditions and location details.
+ */
 public class CurrentWeatherBox {
   int width, height;
   LocationData location;
   WeatherData weather;
   String unit;
 
+  /**
+   * Constructs a CurrentWeatherBox object with specified dimensions,
+   * location data, weather data, and unit system.
+   *
+   * @param width    The width of the weather box.
+   * @param height   The height of the weather box.
+   * @param location The location data.
+   * @param weather  The weather data.
+   * @param unit     The unit system for temperature.
+   */
   public CurrentWeatherBox(int width, int height, LocationData location, WeatherData weather, String unit) {
     this.width = width;
     this.height = height;
@@ -28,6 +42,12 @@ public class CurrentWeatherBox {
     this.unit = unit;
   }
 
+  /**
+   * Retrieves an HBox containing the graphical representation of the current weather conditions.
+   *
+   * @return An HBox containing the current weather representation.
+   * @throws IOException If an error occurs while loading resources.
+   */
   public HBox getContent() throws IOException {
     LocationDataController locationDataController = new LocationDataController(location);
     WeatherDataController weatherDataController = new WeatherDataController(weather, unit);

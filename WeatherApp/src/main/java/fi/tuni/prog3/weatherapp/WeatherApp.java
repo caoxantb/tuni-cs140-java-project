@@ -39,6 +39,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * The main class representing the Weather Application.
+ * This application fetches weather information, displays it,
+ * and allows users to search for locations and view corresponding weather details.
+ */
+
 public class WeatherApp extends Application {
   private static final int WINDOW_HEIGHT = 720;
   private static final int WINDOW_WIDTH = 1280;

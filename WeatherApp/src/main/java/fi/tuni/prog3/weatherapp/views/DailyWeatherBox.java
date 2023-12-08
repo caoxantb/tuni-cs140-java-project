@@ -17,12 +17,27 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The {@code DailyWeatherBox} class generates a graphical representation
+ * of the daily weather forecast for a week.
+ */
 public class DailyWeatherBox {
   int width, height;
   LocationData location;
   ArrayList<WeatherData> dailyWeatherData;
   String unit;
 
+  
+  /**
+   * Constructs a DailyWeatherBox object with specified dimensions, location data,
+   * daily weather data, and unit system.
+   *
+   * @param width             The width of the weather box.
+   * @param height            The height of the weather box.
+   * @param location          The location data.
+   * @param dailyWeatherData  The daily weather data for a week.
+   * @param unit              The unit system for temperature.
+   */
   public DailyWeatherBox(int width, int height, LocationData location, ArrayList<WeatherData> dailyWeatherData,
       String unit) {
     this.width = width;
@@ -32,6 +47,11 @@ public class DailyWeatherBox {
     this.unit = unit;
   }
 
+  /**
+   * Retrieves an HBox containing the graphical representation of the daily weather forecast for a week.
+   *
+   * @return An HBox containing the daily weather forecast representation.
+   */
   public HBox getContent() {
     HBox dailyWeatherBox = new HBox();
     dailyWeatherBox.setPrefWidth(width);

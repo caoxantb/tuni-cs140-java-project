@@ -35,7 +35,7 @@ public class WeatherData {
      *       
      * @param timestamp         The timestamp representing the current time in Unix format (UTC).
      * @param windSpeed         The wind speed in meters per second.
-     * @param icon              The icon code representing the weather condition.
+     * @param id                The weather code representing the weather condition.
      * @param windDir           The wind direction in degrees.
      */
     
@@ -83,6 +83,7 @@ public class WeatherData {
     /**
      * Constructs a {@code WeatherData} object containing hourly weather information.
      * @param timestamp             The time in Unix format (UTC).
+     * @param timeOffset        The time offset in seconds from UTC.  
      * @param temp                  The temperature in Kelvin.
      * @param windSpeed             The wind speed in meters per second.
      * @param icon                  The icon code representing the weather condition.
@@ -120,91 +121,194 @@ public class WeatherData {
     
     // GETTERS for WeatherData Feilds
     
-    public int getTimestamp() {
-        return timestamp;
-    }
+    /**
+    * Retrieves the timestamp representing the current time in Unix format (UTC).
+    * 
+    * @return The timestamp of the weather data.
+    */
+   public int getTimestamp() {
+       return timestamp;
+   }
 
-    public int getTimeOffset() {
-        return timeOffset;
-    }
+   /**
+    * Retrieves the time offset in seconds from UTC.
+    * 
+    * @return The time offset of the weather data.
+    */
+   public int getTimeOffset() {
+       return timeOffset;
+   }
 
-    public double getTemp() {
-        return temp;
-    }
+   /**
+    * Retrieves the temperature in Kelvin.
+    * 
+    * @return The temperature of the weather data.
+    */
+   public double getTemp() {
+       return temp;
+   }
 
-    public double getTempFeelsLike() {
-        return tempFeelsLike;
-    }
+   /**
+    * Retrieves the perceived temperature in Kelvin.
+    * 
+    * @return The perceived temperature of the weather data.
+    */
+   public double getTempFeelsLike() {
+       return tempFeelsLike;
+   }
 
-    public int getWindDir() {
-        return windDir;
-    }
+   /**
+    * Retrieves the wind direction in degrees.
+    * 
+    * @return The wind direction of the weather data.
+    */
+   public int getWindDir() {
+       return windDir;
+   }
 
-    public float getWindSpeed() {
-        return windSpeed;
-    }
+   /**
+    * Retrieves the wind speed in meters per second.
+    * 
+    * @return The wind speed of the weather data.
+    */
+   public float getWindSpeed() {
+       return windSpeed;
+   }
 
-    public float getPrecipitation() {
-        return precipitation;
-    }
+   /**
+    * Retrieves the intensity of precipitation in millimeters.
+    * 
+    * @return The precipitation intensity of the weather data.
+    */
+   public float getPrecipitation() {
+       return precipitation;
+   }
 
-    public float getLat() {
-        return lat;
-    }
+   /**
+    * Retrieves the latitude of the measured location.
+    * 
+    * @return The latitude of the weather data.
+    */
+   public float getLat() {
+       return lat;
+   }
 
-    public float getLon() {
-        return lon;
-    }
+   /**
+    * Retrieves the longitude of the measured location.
+    * 
+    * @return The longitude of the weather data.
+    */
+   public float getLon() {
+       return lon;
+   }
 
-    public String getWeatherDesc() {
-        return weatherDesc;
-    }
+   /**
+    * Retrieves a brief description of the weather condition.
+    * 
+    * @return The weather description.
+    */
+   public String getWeatherDesc() {
+       return weatherDesc;
+   }
 
-    public String getIcon() {
-        return icon;
-    }
-    
-    public float getPrecipitationPerc() {
-        return precipitationPerc;
-    }
-    
-    public double getMinTemp() {
-        return minTemp;
-    }
+   /**
+    * Retrieves the weather icon.
+    * 
+    * @return The weather icon.
+    */
+   public String getIcon() {
+       return icon;
+   }
 
-    public double getMaxTemp() {
-        return maxTemp;
-    }
-    
-    public int getSunrise() {
-        return sunrise;
-    }
-    
-    public int getSunset() {
-        return sunset;
-    }
+   /**
+    * Retrieves the probability of precipitation.
+    * 
+    * @return The precipitation probability.
+    */
+   public float getPrecipitationPerc() {
+       return precipitationPerc;
+   }
 
-    public int getId() {
-        return id;
-    }
-    
-    // SETTERS for WeatherData Temperature Feilds
-    
-    public void setTemp(double temp) {
-        this.temp = temp;
-    }
+   /**
+    * Retrieves the minimum temperature of the day in Kelvin.
+    * 
+    * @return The minimum temperature of the day.
+    */
+   public double getMinTemp() {
+       return minTemp;
+   }
 
-    public void setTempFeelsLike(double tempFeelsLike) {
-        this.tempFeelsLike = tempFeelsLike;
-    }
+   /**
+    * Retrieves the maximum temperature of the day in Kelvin.
+    * 
+    * @return The maximum temperature of the day.
+    */
+   public double getMaxTemp() {
+       return maxTemp;
+   }
 
-    public void setMinTemp(double minTemp) {
-        this.minTemp = minTemp;
-    }
+   /**
+    * Retrieves the sunrise time in Unix format (UTC).
+    * 
+    * @return The sunrise time.
+    */
+   public int getSunrise() {
+       return sunrise;
+   }
 
-    public void setMaxTemp(double maxTemp) {
-        this.maxTemp = maxTemp;
-    }
-    
+   /**
+    * Retrieves the sunset time in Unix format (UTC).
+    * 
+    * @return The sunset time.
+    */
+   public int getSunset() {
+       return sunset;
+   }
+
+   /**
+    * Retrieves the weather ID of the current weather.
+    * 
+    * @return The weather ID.
+    */
+   public int getId() {
+       return id;
+   }
+
+   /**
+    * Sets the temperature in Kelvin.
+    * 
+    * @param temp The temperature value to be set.
+    */
+   public void setTemp(double temp) {
+       this.temp = temp;
+   }
+
+   /**
+    * Sets the perceived temperature in Kelvin.
+    * 
+    * @param tempFeelsLike The perceived temperature value to be set.
+    */
+   public void setTempFeelsLike(double tempFeelsLike) {
+       this.tempFeelsLike = tempFeelsLike;
+   }
+
+   /**
+    * Sets the minimum temperature of the day in Kelvin.
+    * 
+    * @param minTemp The minimum temperature value to be set.
+    */
+   public void setMinTemp(double minTemp) {
+       this.minTemp = minTemp;
+   }
+
+   /**
+    * Sets the maximum temperature of the day in Kelvin.
+    * 
+    * @param maxTemp The maximum temperature value to be set.
+    */
+   public void setMaxTemp(double maxTemp) {
+       this.maxTemp = maxTemp;
+   }
+  
 }
 
