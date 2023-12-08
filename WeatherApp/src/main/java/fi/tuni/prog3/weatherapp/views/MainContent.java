@@ -86,7 +86,6 @@ public class MainContent {
                       "rgba(233, 119, 119, 0.7)"};
     int colorIndex = (temp + 25)/10;
     colorIndex = colorIndex < 0 ? 0 : colorIndex > 6 ? 6 : colorIndex;
-    System.out.println(colorIndex);
 
     String colorCode = String.format("-fx-background-color: linear-gradient(to bottom, %s, transparent)", colors[colorIndex]);
     container.setStyle(colorCode);

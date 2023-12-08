@@ -118,7 +118,17 @@ public class WeatherUtils {
 
     return dayOfWeek.toString();
   }
-
+  /**
+   * Returns the week day in string format based on the provided timestamp and
+   * time offset.
+   * 
+   * @param id The id of weather condition from OpenWeatherMap
+   * @param currentTime The current time (UTC) according in Unix format
+   * @param sunrise The sunrise time in unix format
+   * @param sunset The sunset time in unix format
+   * @param timesOfDay Check if icon is required to display according to times of day (day/night)
+   * @return The local time in the specified format.
+   */
   public String getIconString(int id, int currentTime, int sunrise, int sunset, boolean timesOfDay) {
     String prefix;
     String iconString = "";

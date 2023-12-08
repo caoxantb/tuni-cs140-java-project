@@ -7,6 +7,7 @@ import fi.tuni.prog3.weatherapp.models.LocationData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +19,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
- * The {@code SearchContent} class generates the search content view for the weather application.
+ * The {@code SearchContent} class generates the search content view for the
+ * weather application.
  */
 public class SearchContent {
   ArrayList<LocationData> searchResults, history, favorites;
@@ -26,15 +28,15 @@ public class SearchContent {
   EventHandler<MouseEvent> searchEvent;
   VBox searchBox;
 
-   /**
+  /**
    * Constructs a SearchContent object with specified parameters.
    *
-   * @param width       The width of the search content.
-   * @param searchBox   The VBox containing search components.
+   * @param width         The width of the search content.
+   * @param searchBox     The VBox containing search components.
    * @param searchResults The list of search results.
-   * @param history     The list of search history.
-   * @param favorites   The list of favorite locations.
-   * @param searchEvent The event handler for search actions.
+   * @param history       The list of search history.
+   * @param favorites     The list of favorite locations.
+   * @param searchEvent   The event handler for search actions.
    */
   public SearchContent(int width, VBox searchBox, ArrayList<LocationData> searchResults,
       ArrayList<LocationData> history, ArrayList<LocationData> favorites,
@@ -101,6 +103,8 @@ public class SearchContent {
       searchTabBox.getProperties().put("location", data);
       searchTabBox.setOnMouseClicked(searchEvent);
       searchTabBox.setAlignment(Pos.CENTER_LEFT);
+      searchTabBox.setOnMouseEntered(event -> searchTabBox.setCursor(Cursor.HAND));
+      searchTabBox.setOnMouseExited(event -> searchTabBox.setCursor(Cursor.DEFAULT));
 
       ImageView boxIcon = new ImageView(
           new Image(getClass().getResourceAsStream(String.format("/label-icons/%s.png", icon))));

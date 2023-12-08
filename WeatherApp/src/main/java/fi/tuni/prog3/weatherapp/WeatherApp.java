@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -43,10 +44,13 @@ import java.util.Map;
 /**
  * The main class representing the Weather Application.
  * This application fetches weather information, displays it,
- * and allows users to search for locations and view corresponding weather details.
+ * and allows users to search for locations and view corresponding weather
+ * details.
  */
 
 public class WeatherApp extends Application {
+  // Using Simple Property to set the original state of data -- Work somewhat like
+  // useState() in React
   private static final int WINDOW_HEIGHT = 720;
   private static final int WINDOW_WIDTH = 1280;
   LocationDataService locationDataService = new LocationDataService();
@@ -81,13 +85,13 @@ public class WeatherApp extends Application {
       (int) Math.round(currentWeatherData.get().getTemp() - 273.15));
 
   TabPane tabpane = new TabPane();
-
   Tab main = new Tab("Weather Report");
   Button unitSystemButton = new Button();
   Button setFavoriteButton = new Button();
 
   @Override
   public void start(Stage stage) throws IOException {
+    // Main tab UI
     unitSystemButton.setText("Convert unit system");
     setFavoriteButton.setText(setFavoriteLabel.get());
 
@@ -97,6 +101,7 @@ public class WeatherApp extends Application {
         setFavoriteButton, originalTemp.get())
         .getContent();
 
+    // Event handler for unit conversion
     EventHandler<ActionEvent> unitSystemConverter = event -> {
       if (unit.get().equals("imperial")) {
         unit.set("metric");
@@ -115,6 +120,7 @@ public class WeatherApp extends Application {
       }
     };
 
+    // Event handler for changing favorite status
     EventHandler<ActionEvent> changeFavoriteStatus = event -> {
       if (setFavoriteLabel.get().equals("Add to favorites")) {
         locationDataService.addFavoriteLocation(latestSearchLocation.get());
@@ -129,14 +135,20 @@ public class WeatherApp extends Application {
     };
 
     unitSystemButton.setOnAction(unitSystemConverter);
+    unitSystemButton.setOnMouseEntered(event -> unitSystemButton.setCursor(Cursor.HAND));
+    unitSystemButton.setOnMouseExited(event -> unitSystemButton.setCursor(Cursor.DEFAULT));
     setFavoriteButton.setOnAction(changeFavoriteStatus);
+    setFavoriteButton.setOnMouseEntered(event -> setFavoriteButton.setCursor(Cursor.HAND));
+    setFavoriteButton.setOnMouseExited(event -> setFavoriteButton.setCursor(Cursor.DEFAULT));
 
     main.setContent(mainContent);
 
     // =======================================================================
 
+    // Search tab UI
     Tab search = new Tab("Search and History");
 
+    // Event handler when click on a location name in the search tab
     EventHandler<MouseEvent> searchEvent = event -> {
       unit.set("initial");
       try {
@@ -161,7 +173,6 @@ public class WeatherApp extends Application {
             : "Add to favorites");
         setFavoriteButton.setText(setFavoriteLabel.get());
         originalTemp.set((int) Math.round(currentWeatherData.get().getTemp() - 273.15));
-        System.out.println(originalTemp);
         ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT,
             latestSearchLocation.get(),
             currentWeatherData.get(),
@@ -175,6 +186,7 @@ public class WeatherApp extends Application {
       tabpane.getSelectionModel().select(0);
     };
 
+    // Search panel for the search tab
     VBox searchBox = new VBox(10);
     searchBox
         .setStyle("-fx-background-color: linear-gradient(to bottom right, rgba(196, 196, 196, 0.7), transparent);");
@@ -185,6 +197,7 @@ public class WeatherApp extends Application {
     searchBox.setPrefWidth(WINDOW_WIDTH / 2);
     searchBox.setPrefHeight(720 / 2);
 
+    // City text field for user input
     Text labelCity = new Text("City");
     Region spacer1 = new Region();
     HBox.setHgrow(spacer1, Priority.ALWAYS);
@@ -195,6 +208,7 @@ public class WeatherApp extends Application {
     cityQuery.setAlignment(Pos.CENTER);
     cityQuery.setPrefWidth(WINDOW_WIDTH / 2);
 
+    // Country dropdown for user selection
     Text labelCountry = new Text("Country");
     Region spacer2 = new Region();
     HBox.setHgrow(spacer2, Priority.ALWAYS);
@@ -210,6 +224,7 @@ public class WeatherApp extends Application {
     countryQuery.setAlignment(Pos.CENTER);
     countryQuery.setPrefWidth(WINDOW_WIDTH / 2);
 
+    // State dropdown for user selection
     Text labelState = new Text("State");
     Region spacer3 = new Region();
     HBox.setHgrow(spacer3, Priority.ALWAYS);
@@ -237,11 +252,16 @@ public class WeatherApp extends Application {
       }
     });
 
+    // Search button
     Button searchButton = new Button("Search");
     HBox searchButtonBox = new HBox(searchButton);
     searchButtonBox.setAlignment(Pos.CENTER_RIGHT);
     searchButtonBox.setPrefWidth(WINDOW_WIDTH / 2);
 
+    searchButton.setOnMouseEntered(event -> searchButton.setCursor(Cursor.HAND));
+    searchButton.setOnMouseExited(event -> searchButton.setCursor(Cursor.DEFAULT));
+
+    // Event handler for query location
     searchButton.setOnAction(event -> {
       cityQueryValue.set(cityTextField.getText());
       try {
@@ -275,6 +295,7 @@ public class WeatherApp extends Application {
 
     searchBox.getChildren().addAll(cityQuery, countryQuery, stateQuery, searchButtonBox);
 
+    // Update search tab whenever clicked
     search.selectedProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
         SearchContent newSearchContent = new SearchContent(WINDOW_WIDTH, searchBox, new ArrayList<>(searchResults),
@@ -292,12 +313,10 @@ public class WeatherApp extends Application {
 
     search.setContent(searchContent.getContent());
 
-    ///
-
     tabpane.getTabs().addAll(main, search);
 
     ScrollPane scrollPane = new ScrollPane(tabpane);
-    scrollPane.setPrefSize(1280, 720);
+    scrollPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     scrollPane.setFitToWidth(true);
 
     Scene scene = new Scene(tabpane, WINDOW_WIDTH, WINDOW_HEIGHT);
