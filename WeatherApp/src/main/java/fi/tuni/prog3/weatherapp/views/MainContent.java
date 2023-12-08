@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 
 public class MainContent {
-  int width, height;
+  int width, height, originalTemp;
   LocationData location;
   WeatherData currentWeatherData;
   ArrayList<WeatherData> hourlyWeatherData;
@@ -22,7 +22,8 @@ public class MainContent {
   Button button, setFavoriteButton;
 
   public MainContent(int width, int height, LocationData location, WeatherData currentWeatherData,
-      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData, String unit, Button button, Button setFavoriteButton) {
+      ArrayList<WeatherData> hourlyWeatherData, ArrayList<WeatherData> dailyWeatherData, String unit, Button button,
+      Button setFavoriteButton, int originalTemp) {
     this.width = width;
     this.height = height;
     this.location = location;
@@ -32,6 +33,7 @@ public class MainContent {
     this.unit = unit;
     this.button = button;
     this.setFavoriteButton = setFavoriteButton;
+    this.originalTemp = originalTemp;
   }
 
   public ScrollPane getContent() throws IOException {
@@ -46,12 +48,24 @@ public class MainContent {
 
     VBox container = new VBox();
     container.getChildren().addAll(currentWeatherBox, utils, hourlyWeatherBox, dailyWeatherBox);
-    container.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(242, 226, 186, 0.7), transparent);");
+    setTempColor(container, originalTemp);
 
     mainContent.getChildren().add(container);
     ScrollPane scrollPane = new ScrollPane(mainContent);
     scrollPane.setFitToWidth(true);
 
     return scrollPane;
+  }
+
+  private void setTempColor(VBox container, int temp) {
+    String[] colors = {"rgba(232, 160, 191, 0.7)", "rgba(96, 150, 180, 0.7)", "rgba(185, 243, 252, 0.7)", 
+                      "rgba(203, 255, 169, 0.7)", "rgba(242, 226, 186, 0.7)", "rgba(249, 181, 114, 0.7)",
+                      "rgba(233, 119, 119, 0.7)"};
+    int colorIndex = (temp + 25)/10;
+    colorIndex = colorIndex < 0 ? 0 : colorIndex > 6 ? 6 : colorIndex;
+    System.out.println(colorIndex);
+
+    String colorCode = String.format("-fx-background-color: linear-gradient(to bottom, %s, transparent)", colors[colorIndex]);
+    container.setStyle(colorCode);
   }
 }

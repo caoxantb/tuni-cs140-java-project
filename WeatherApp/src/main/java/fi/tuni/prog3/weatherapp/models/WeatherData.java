@@ -84,11 +84,14 @@ public class WeatherData {
      * Constructs a {@code WeatherData} object containing hourly weather information.
      * @param timestamp             The time in Unix format (UTC).
      * @param temp                  The temperature in Kelvin.
+     * @param timeOffset            The time offset in seconds from UTC
      * @param windSpeed             The wind speed in meters per second.
      * @param icon                  The icon code representing the weather condition.
      * @param precipitationPerc     The probability of precipitation.
-     * @param windDir           The wind direction in degrees.
-     * @param id                The weather id of current weather
+     * @param windDir               The wind direction in degrees.
+     * @param sunrise               The sunrise time in Unix format (UTC).
+     * @param sunset                The sunset time in Unix format (UTC).
+     * @param id                    The weather id of current weather
      */
     public WeatherData(int timestamp, int timeOffset, double temp, float windSpeed, String icon, float precipitationPerc, int windDir, int id, int sunrise, int sunset) {
         this(timestamp, windSpeed, id, windDir);
@@ -108,8 +111,8 @@ public class WeatherData {
      * @param precipitationPerc     The probability of precipitation.
      * @param minTemp               The minimum temperature of the day in Kelvin.
      * @param maxTemp               The maximum temperature of the day in Kelvin.
-     * @param windDir           The wind direction in degrees.
-     * @param id                The weather id of current weather
+     * @param windDir               The wind direction in degrees.
+     * @param id                    The weather id of current weather
      */
     public WeatherData(int timestamp, float windSpeed, String icon, float precipitationPerc, double minTemp, double maxTemp, int windDir, int id) {
         this(timestamp, windSpeed, id, windDir);

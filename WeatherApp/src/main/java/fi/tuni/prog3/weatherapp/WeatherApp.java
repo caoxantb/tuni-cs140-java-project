@@ -2,6 +2,7 @@ package fi.tuni.prog3.weatherapp;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -70,6 +71,8 @@ public class WeatherApp extends Application {
       locationDataService.isFavoriteLocation(latestSearchLocation.get().getId())
           ? "Remove from favorites"
           : "Add to favorites");
+  SimpleIntegerProperty originalTemp = new SimpleIntegerProperty(
+      (int) Math.round(currentWeatherData.get().getTemp() - 273.15));
 
   TabPane tabpane = new TabPane();
 
@@ -85,7 +88,7 @@ public class WeatherApp extends Application {
     ScrollPane mainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
         currentWeatherData.get(),
         new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(), unitSystemButton,
-        setFavoriteButton)
+        setFavoriteButton, originalTemp.get())
         .getContent();
 
     EventHandler<ActionEvent> unitSystemConverter = event -> {
@@ -98,7 +101,7 @@ public class WeatherApp extends Application {
         ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT, latestSearchLocation.get(),
             currentWeatherData.get(),
             new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(),
-            unitSystemButton, setFavoriteButton)
+            unitSystemButton, setFavoriteButton, originalTemp.get())
             .getContent();
         main.setContent(newMainContent);
       } catch (IOException e) {
@@ -151,12 +154,13 @@ public class WeatherApp extends Application {
             ? "Remove from favorites"
             : "Add to favorites");
         setFavoriteButton.setText(setFavoriteLabel.get());
-
+        originalTemp.set((int) Math.round(currentWeatherData.get().getTemp() - 273.15));
+        System.out.println(originalTemp);
         ScrollPane newMainContent = new MainContent(WINDOW_WIDTH, WINDOW_HEIGHT,
             latestSearchLocation.get(),
             currentWeatherData.get(),
             new ArrayList<>(hourlyWeatherData.get()), new ArrayList<>(dailyWeatherData.get()), unit.get(),
-            unitSystemButton, setFavoriteButton)
+            unitSystemButton, setFavoriteButton, originalTemp.get())
             .getContent();
         main.setContent(newMainContent);
       } catch (IOException e) {
