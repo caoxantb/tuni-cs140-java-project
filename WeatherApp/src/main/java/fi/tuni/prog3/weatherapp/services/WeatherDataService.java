@@ -107,8 +107,10 @@ public class WeatherDataService {
                     float precipitationPerc = forecastObj.optFloat("pop");
                     int windDir = forecastObj.getJSONObject("wind").optInt("deg");
                     int id = forecastObj.getJSONArray("weather").getJSONObject(0).optInt("id");
+                    double originalTemp = forecastObj.getJSONObject("main").optDouble("temp");
+
                     
-                    WeatherData weatherData = new WeatherData(timestamp, timeOffset, temp, windSpeed, icon, precipitationPerc, windDir, id, sunrise, sunset);
+                    WeatherData weatherData = new WeatherData(timestamp, timeOffset, temp, windSpeed, icon, precipitationPerc, windDir, id, sunrise, sunset, originalTemp);
                     _3HourlyWeatherForecast.add(weatherData);
                 }                      
             }       
@@ -150,9 +152,11 @@ public class WeatherDataService {
                     double maxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
                     int windDir = dailyForecast.optInt("wind_deg");
                                         int id = dailyForecast.getJSONArray("weather").getJSONObject(0).getInt("id");
+                    double originalMaxTemp = dailyForecast.getJSONObject("temp").getDouble("max");
+                    double originalMinTemp = dailyForecast.getJSONObject("temp").getDouble("min");
 
                     
-                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp, windDir, id);
+                    WeatherData weatherData = new WeatherData(timestamp, windSpeed, icon, precipitationPerc, minTemp, maxTemp, windDir, id, originalMinTemp, originalMaxTemp);
                     weeklyWeatherForecast.add(weatherData);
                 }                        
             }       

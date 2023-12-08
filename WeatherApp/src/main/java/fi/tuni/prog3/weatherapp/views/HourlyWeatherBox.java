@@ -31,7 +31,8 @@ public class HourlyWeatherBox {
   String unit;
 
   /**
-   * Constructs an HourlyWeatherBox object with specified dimensions, location data,
+   * Constructs an HourlyWeatherBox object with specified dimensions, location
+   * data,
    * hourly weather data, and unit system.
    *
    * @param width             The width of the weather box.
@@ -50,7 +51,8 @@ public class HourlyWeatherBox {
   }
 
   /**
-   * Retrieves an HBox containing the graphical representation of the hourly weather forecast.
+   * Retrieves an HBox containing the graphical representation of the hourly
+   * weather forecast.
    *
    * @return An HBox containing the hourly weather forecast representation.
    */
@@ -71,6 +73,9 @@ public class HourlyWeatherBox {
     hourlyWeatherStackContainer.setPrefWidth(width);
     hourlyWeatherStackContainer.setSpacing(20);
 
+    int minTemp = getMinTemp(hourlyWeatherData);
+    int maxTemp = getMaxTemp(hourlyWeatherData);
+
     for (WeatherData hourlyWeather : hourlyWeatherData) {
       WeatherDataController weatherDataController = new WeatherDataController(hourlyWeather, unit);
       WeatherUtils weatherUtils = new WeatherUtils();
@@ -86,7 +91,7 @@ public class HourlyWeatherBox {
       forecastHour.setFont(Font.font("Futura", FontWeight.BOLD, 14));
 
       ImageView hourlyWeatherIcon = weatherDataController.getHourlyWeatherIcon();
-      
+
       HBox hourlyPop = new HBox();
       hourlyPop.setPrefWidth(width / 8);
       hourlyPop.setAlignment(Pos.CENTER);
@@ -111,10 +116,13 @@ public class HourlyWeatherBox {
 
       ImageView hourlyWindDirectionIcon = weatherDataController.getWeatherWindDir();
 
+      int temp = (int) Math.round(hourlyWeather.getOriginalTemp() - 273.15);
+
       Text hourlyTemp = weatherDataController.getWeatherTemp();
       hourlyTemp.setFont(Font.font("Futura", FontWeight.BOLD, 14));
+      VBox.setMargin(hourlyTemp, new Insets((maxTemp - temp) * 4, 0, 0, 0));
 
-      Rectangle hourlyTempSpan = new Rectangle(12, 52);
+      Rectangle hourlyTempSpan = new Rectangle(12, (temp - minTemp + 10) * 4);
       hourlyTempSpan.setFill(Color.BLACK);
       hourlyTempSpan.setArcWidth(12);
       hourlyTempSpan.setArcHeight(12);
@@ -131,5 +139,29 @@ public class HourlyWeatherBox {
     hourlyWeatherBox.getChildren().addAll(hourlyWeatherContainer);
 
     return hourlyWeatherBox;
+  }
+
+  private int getMaxTemp(ArrayList<WeatherData> hourlyWeatherData) {
+    int maxTemp = Integer.MIN_VALUE;
+    for (WeatherData hourlyWeather : hourlyWeatherData) {
+      double temp = hourlyWeather.getOriginalTemp();
+      int tempInt = (int) Math.round(temp - 273.15);
+      if (tempInt > maxTemp) {
+        maxTemp = tempInt;
+      }
+    }
+    return maxTemp;
+  }
+
+  private int getMinTemp(ArrayList<WeatherData> hourlyWeatherData) {
+    int minTemp = Integer.MAX_VALUE;
+    for (WeatherData hourlyWeather : hourlyWeatherData) {
+      double temp = hourlyWeather.getOriginalTemp();
+      int tempInt = (int) Math.round(temp - 273.15);
+      if (tempInt < minTemp) {
+        minTemp = tempInt;
+      }
+    }
+    return minTemp;
   }
 }

@@ -69,6 +69,8 @@ public class DailyWeatherBox {
     dailyWeatherStackContainer.setPrefWidth(width);
     dailyWeatherStackContainer.setSpacing(20);
 
+    int maxMaxTemp = getMaxMaxTemp(dailyWeatherData, unit);
+
     for (WeatherData dailyWeather : dailyWeatherData) {
       VBox dailyWeatherStack = new VBox();
       dailyWeatherStack.setPrefWidth(width / 8);
@@ -104,9 +106,13 @@ public class DailyWeatherBox {
 
       ImageView dailyWindDirectionIcon = weatherDataController.getWeatherWindDir();
 
-      Text dailyTempMax = weatherDataController.getWeatherMaxTemp();
+      int maxTemp = (int) Math.round(dailyWeather.getOriginalMaxTemp() - 273.15);
+      int minTemp = (int) Math.round(dailyWeather.getOriginalMinTemp() - 273.15);
 
-      Rectangle dailyTempSpan = new Rectangle(12, 52);
+      Text dailyTempMax = weatherDataController.getWeatherMaxTemp();
+      VBox.setMargin(dailyTempMax, new Insets((maxMaxTemp - maxTemp) * 4, 0, 0,0));
+      
+      Rectangle dailyTempSpan = new Rectangle(12, (maxTemp - minTemp + 10) * 4);
       dailyTempSpan.setFill(Color.BLACK);
       dailyTempSpan.setArcWidth(12);
       dailyTempSpan.setArcHeight(12);
@@ -120,11 +126,22 @@ public class DailyWeatherBox {
       dailyWeatherStack.getChildren().addAll(forecastDay, dailyWeatherIcon, dailyPop, dailyWind, dailyTempMax,
           dailyTempSpan, dailyTempMin);
       dailyWeatherStackContainer.getChildren().addAll(dailyWeatherStack);
-
     }
     dailyWeatherContainer.getChildren().addAll(labelDaily, dailyWeatherStackContainer);
     dailyWeatherBox.getChildren().addAll(dailyWeatherContainer);
 
     return dailyWeatherBox;
+  }
+
+  private int getMaxMaxTemp(ArrayList<WeatherData> dailyWeatherData, String unit) {
+    int maxMaxTemp = Integer.MIN_VALUE;
+    for (WeatherData dailyWeather : dailyWeatherData) {
+      double temp = dailyWeather.getOriginalMaxTemp();
+      int tempInt = (int) Math.round(temp - 273.15);
+      if (tempInt > maxMaxTemp) {
+        maxMaxTemp = tempInt;
+      }
+    }
+    return maxMaxTemp;
   }
 }
